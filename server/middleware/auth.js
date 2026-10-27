@@ -33,11 +33,12 @@ export const requireAuth = async (req, res, next) => {
   }
 
   // Development fallback for local testing when Supabase keys are placeholders
+  const isAdmin = token.includes('admin');
   req.user = {
-    id: 'usr_demo_careerfit_001',
-    email: 'candidate@careerfit.ai',
-    user_metadata: { full_name: 'Demo Candidate' },
-    role: 'candidate'
+    id: isAdmin ? 'usr_demo_admin_001' : 'usr_demo_careerfit_001',
+    email: isAdmin ? 'admin@careerfit.ai' : 'candidate@careerfit.ai',
+    user_metadata: { full_name: isAdmin ? 'System Administrator' : 'Demo Candidate', role: isAdmin ? 'admin' : 'candidate' },
+    role: isAdmin ? 'admin' : 'candidate'
   };
   req.scopedClient = null;
   next();

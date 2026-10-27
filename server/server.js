@@ -38,8 +38,10 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(standardLimiter);
 
-// Health route
+// Health routes
 app.use('/', healthRoutes);
+app.use('/api', healthRoutes);
+app.use('/api/v1', healthRoutes);
 
 // Versioned API routes
 const API_PREFIX = '/api/v1';
