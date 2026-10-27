@@ -1,0 +1,226 @@
+{
+  "skills": [
+    {
+      "canonical_name": "Python",
+      "category": "programming_language",
+      "aliases": ["py", "python3", "python 3", "python2", "cpython"],
+      "roles": ["Software Engineer", "Backend Developer", "Data Scientist", "Machine Learning Engineer", "DevOps Engineer"]
+    },
+    {
+      "canonical_name": "JavaScript",
+      "category": "programming_language",
+      "aliases": ["js", "es6", "es2015", "es2020", "ecmascript"],
+      "roles": ["Frontend Developer", "Full Stack Developer", "Web Developer", "Software Engineer"]
+    },
+    {
+      "canonical_name": "TypeScript",
+      "category": "programming_language",
+      "aliases": ["ts", "typescript 4", "typescript 5"],
+      "roles": ["Frontend Developer", "Full Stack Developer", "Backend Developer", "Software Engineer"]
+    },
+    {
+      "canonical_name": "Java",
+      "category": "programming_language",
+      "aliases": ["java 8", "java 11", "java 17", "java 21", "core java", "j2ee"],
+      "roles": ["Backend Developer", "Enterprise Software Engineer", "Android Developer"]
+    },
+    {
+      "canonical_name": "C++",
+      "category": "programming_language",
+      "aliases": ["cpp", "c/c++", "modern c++", "c++11", "c++17", "c++20"],
+      "roles": ["Systems Engineer", "Game Developer", "Embedded Engineer", "Quantitative Developer"]
+    },
+    {
+      "canonical_name": "Go",
+      "category": "programming_language",
+      "aliases": ["golang", "go-lang"],
+      "roles": ["Cloud Engineer", "Backend Developer", "DevOps Engineer", "Distributed Systems Engineer"]
+    },
+    {
+      "canonical_name": "SQL",
+      "category": "database",
+      "aliases": ["structured query language", "ansi sql", "tsql", "plsql"],
+      "roles": ["Data Analyst", "Data Engineer", "Backend Developer", "Database Administrator"]
+    },
+    {
+      "canonical_name": "PostgreSQL",
+      "category": "database",
+      "aliases": ["postgres", "pgsql", "psql", "supabase postgres"],
+      "roles": ["Backend Developer", "Database Administrator", "Full Stack Developer"]
+    },
+    {
+      "canonical_name": "MySQL",
+      "category": "database",
+      "aliases": ["my-sql", "mariadb"],
+      "roles": ["Backend Developer", "Full Stack Developer"]
+    },
+    {
+      "canonical_name": "MongoDB",
+      "category": "database",
+      "aliases": ["mongo", "nosql mongo"],
+      "roles": ["Full Stack Developer", "Backend Developer"]
+    },
+    {
+      "canonical_name": "Redis",
+      "category": "database",
+      "aliases": ["redis cache", "redis key-value"],
+      "roles": ["Backend Developer", "Systems Architect"]
+    },
+    {
+      "canonical_name": "React",
+      "category": "frontend_framework",
+      "aliases": ["reactjs", "react.js", "react 18", "react 19"],
+      "roles": ["Frontend Developer", "Full Stack Developer", "UI/UX Engineer"]
+    },
+    {
+      "canonical_name": "Next.js",
+      "category": "frontend_framework",
+      "aliases": ["nextjs", "next.js 14", "next.js 15"],
+      "roles": ["Full Stack Developer", "Frontend Developer"]
+    },
+    {
+      "canonical_name": "Node.js",
+      "category": "backend_framework",
+      "aliases": ["nodejs", "node.js runtime", "node"],
+      "roles": ["Backend Developer", "Full Stack Developer"]
+    },
+    {
+      "canonical_name": "Express.js",
+      "category": "backend_framework",
+      "aliases": ["express", "expressjs"],
+      "roles": ["Backend Developer", "Full Stack Developer"]
+    },
+    {
+      "canonical_name": "FastAPI",
+      "category": "backend_framework",
+      "aliases": ["fast-api", "fastapi framework"],
+      "roles": ["Backend Developer", "AI Engineer", "ML Engineer"]
+    },
+    {
+      "canonical_name": "Django",
+      "category": "backend_framework",
+      "aliases": ["django framework", "django rest framework", "drf"],
+      "roles": ["Backend Developer", "Full Stack Developer"]
+    },
+    {
+      "canonical_name": "Flask",
+      "category": "backend_framework",
+      "aliases": ["flask framework"],
+      "roles": ["Backend Developer", "Data Scientist"]
+    },
+    {
+      "canonical_name": "Docker",
+      "category": "devops",
+      "aliases": ["docker containers", "dockerfile", "docker-compose", "containerization"],
+      "roles": ["DevOps Engineer", "Cloud Engineer", "Backend Developer", "Software Engineer"]
+    },
+    {
+      "canonical_name": "Kubernetes",
+      "category": "devops",
+      "aliases": ["k8s", "kube", "k8s cluster"],
+      "roles": ["DevOps Engineer", "Cloud Architect", "Site Reliability Engineer"]
+    },
+    {
+      "canonical_name": "AWS",
+      "category": "cloud",
+      "aliases": ["amazon web services", "ec2", "s3", "lambda", "aws cloud"],
+      "roles": ["Cloud Engineer", "DevOps Engineer", "Solutions Architect", "Backend Developer"]
+    },
+    {
+      "canonical_name": "Google Cloud Platform",
+      "category": "cloud",
+      "aliases": ["gcp", "google cloud", "bigquery", "cloud run"],
+      "roles": ["Cloud Engineer", "Data Engineer", "Machine Learning Engineer"]
+    },
+    {
+      "canonical_name": "CI/CD",
+      "category": "devops",
+      "aliases": ["github actions", "gitlab ci", "jenkins", "continuous integration", "continuous deployment"],
+      "roles": ["DevOps Engineer", "Software Engineer"]
+    },
+    {
+      "canonical_name": "Git",
+      "category": "tools",
+      "aliases": ["version control", "github", "gitlab", "bitbucket"],
+      "roles": ["Software Engineer", "All Tech Roles"]
+    },
+    {
+      "canonical_name": "Tailwind CSS",
+      "category": "styling",
+      "aliases": ["tailwind", "tailwindcss", "utility-first css"],
+      "roles": ["Frontend Developer", "UI/UX Designer"]
+    },
+    {
+      "canonical_name": "REST API",
+      "category": "architecture",
+      "aliases": ["restful apis", "restful web services", "rest apis"],
+      "roles": ["Backend Developer", "Full Stack Developer", "Software Engineer"]
+    },
+    {
+      "canonical_name": "GraphQL",
+      "category": "architecture",
+      "aliases": ["graphql api", "apollo graphql"],
+      "roles": ["Full Stack Developer", "Backend Developer"]
+    },
+    {
+      "canonical_name": "Machine Learning",
+      "category": "ai_ml",
+      "aliases": ["ml", "machine learning algorithms", "supervised learning", "unsupervised learning"],
+      "roles": ["Machine Learning Engineer", "Data Scientist", "AI Researcher"]
+    },
+    {
+      "canonical_name": "Natural Language Processing",
+      "category": "ai_ml",
+      "aliases": ["nlp", "text mining", "spacy", "hugging face", "transformers"],
+      "roles": ["NLP Engineer", "AI Engineer", "Data Scientist"]
+    },
+    {
+      "canonical_name": "PyTorch",
+      "category": "ai_ml",
+      "aliases": ["torch", "pytorch deep learning"],
+      "roles": ["Machine Learning Engineer", "AI Researcher", "Computer Vision Engineer"]
+    },
+    {
+      "canonical_name": "TensorFlow",
+      "category": "ai_ml",
+      "aliases": ["tf", "keras", "tf2"],
+      "roles": ["Machine Learning Engineer", "Data Scientist"]
+    },
+    {
+      "canonical_name": "Retrieval-Augmented Generation",
+      "category": "ai_ml",
+      "aliases": ["rag", "rag pipelines", "vector search", "langchain", "llamaindex"],
+      "roles": ["AI Engineer", "LLM Engineer", "Full Stack AI Developer"]
+    },
+    {
+      "canonical_name": "Unit Testing",
+      "category": "testing",
+      "aliases": ["pytest", "jest", "junit", "tdd", "test driven development"],
+      "roles": ["Software Engineer", "QA Engineer"]
+    },
+    {
+      "canonical_name": "System Design",
+      "category": "architecture",
+      "aliases": ["distributed systems", "microservices", "high availability", "scalability"],
+      "roles": ["Senior Software Engineer", "System Architect", "Tech Lead"]
+    },
+    {
+      "canonical_name": "Agile / Scrum",
+      "category": "methodology",
+      "aliases": ["scrum", "agile methodology", "sprint planning", "kanban"],
+      "roles": ["All Software Roles", "Product Manager"]
+    },
+    {
+      "canonical_name": "Problem Solving",
+      "category": "soft_skill",
+      "aliases": ["analytical skills", "critical thinking", "troubleshooting"],
+      "roles": ["All Roles"]
+    },
+    {
+      "canonical_name": "Communication",
+      "category": "soft_skill",
+      "aliases": ["written communication", "verbal communication", "cross-functional collaboration"],
+      "roles": ["All Roles"]
+    }
+  ]
+}

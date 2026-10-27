@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CareerFit AI — ATS Assessment Report</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm 15mm 20mm 15mm;
+    }
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #171717;
+      background-color: #FFFFFF;
+      margin: 0;
+      padding: 0;
+      line-height: 1.5;
+    }
+    .header {
+      border-bottom: 3px solid #F97316;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: #171717;
+      letter-spacing: -0.5px;
+    }
+    .logo span {
+      color: #F97316;
+    }
+    .meta-info {
+      text-align: right;
+      font-size: 11px;
+      color: #737373;
+    }
+    .hero-score-box {
+      background: #F7F5F0;
+      border: 1px solid #E7E5E4;
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      margin-bottom: 24px;
+      align-items: center;
+    }
+    .score-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: #171717;
+      color: #FFFFFF;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-right: 24px;
+      flex-shrink: 0;
+    }
+    .score-number {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+      color: #F97316;
+    }
+    .score-sub {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #A3A3A3;
+    }
+    .hero-details h2 {
+      margin: 0 0 6px 0;
+      font-size: 20px;
+      color: #171717;
+    }
+    .hero-details p {
+      margin: 0;
+      font-size: 13px;
+      color: #525252;
+    }
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #171717;
+      border-bottom: 1px solid #E7E5E4;
+      padding-bottom: 6px;
+      margin-top: 24px;
+      margin-bottom: 14px;
+    }
+    .category-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .cat-card {
+      background: #FAFAFA;
+      border: 1px solid #E7E5E4;
+      border-radius: 6px;
+      padding: 12px;
+    }
+    .cat-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .cat-score {
+      color: #F97316;
+      font-weight: 700;
+    }
+    .progress-bar-bg {
+      background: #E5E5E5;
+      height: 6px;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .progress-bar-fill {
+      background: #F97316;
+      height: 100%;
+    }
+    .cat-feedback {
+      font-size: 11px;
+      color: #525252;
+    }
+    .findings-list {
+      padding-left: 18px;
+      margin: 8px 0;
+      font-size: 12px;
+      color: #262626;
+    }
+    .findings-list li {
+      margin-bottom: 6px;
+    }
+    .rewrite-card {
+      background: #FFF0E5;
+      border-left: 4px solid #F97316;
+      padding: 10px 14px;
+      margin-bottom: 10px;
+      border-radius: 0 6px 6px 0;
+      font-size: 12px;
+    }
+    .rewrite-orig {
+      color: #737373;
+      text-decoration: line-through;
+      margin-bottom: 4px;
+    }
+    .rewrite-imp {
+      color: #171717;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .rewrite-reason {
+      color: #B45309;
+      font-size: 11px;
+    }
+    .footer {
+      margin-top: 32px;
+      padding-top: 12px;
+      border-top: 1px solid #E7E5E4;
+      font-size: 10px;
+      color: #A3A3A3;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">CareerFit<span>AI</span></div>
+    <div class="meta-info">
+      <div><strong>Candidate:</strong> {{ candidate_name | e }}</div>
+      <div><strong>Role:</strong> {{ target_role | e }}</div>
+      <div><strong>Date:</strong> {{ date | e }}</div>
+    </div>
+  </div>
+
+  <div class="hero-score-box">
+    <div class="score-circle">
+      <div class="score-number">{{ overall_score }}</div>
+      <div class="score-sub">/ 100</div>
+    </div>
+    <div class="hero-details">
+      <h2>{{ readiness_level | e }}</h2>
+      <p>This assessment measures ATS format compatibility, technical keyword density, content action verbs, and quantifiable impact metrics against current technical job benchmarks.</p>
+    </div>
+  </div>
+
+  <div class="section-title">Category Breakdown</div>
+  <div class="category-grid">
+    {% for cat_key, cat in category_scores.items() %}
+    <div class="cat-card">
+      <div class="cat-head">
+        <span>{{ cat.name | e }}</span>
+        <span class="cat-score">{{ cat.score }} / {{ cat.max_score }}</span>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width: {{ cat.percentage }}%;"></div>
+      </div>
+      <div class="cat-feedback">{{ cat.feedback | e }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="section-title">Key Strengths</div>
+  <ul class="findings-list">
+    {% for strength in strengths %}
+    <li>{{ strength | e }}</li>
+    {% endfor %}
+  </ul>
+
+  <div class="section-title">Critical Improvement Areas</div>
+  <ul class="findings-list">
+    {% for issue in critical_issues %}
+    <li><strong>Alert:</strong> {{ issue | e }}</li>
+    {% endfor %}
+  </ul>
+
+  {% if bullet_point_rewrites %}
+  <div class="section-title">AI Bullet-Point Recommendations (Google X-Y-Z Pattern)</div>
+  {% for rewrite in bullet_point_rewrites %}
+  <div class="rewrite-card">
+    <div class="rewrite-orig">Original: {{ rewrite.original | e }}</div>
+    <div class="rewrite-imp">Improved: {{ rewrite.improved | e }}</div>
+    <div class="rewrite-reason">Rationale: {{ rewrite.reason | e }}</div>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <div class="footer">
+    Generated securely by CareerFit AI Intelligence Engine. This evaluation is an empirical readiness indicator and not a commercial guarantee of hiring outcomes.
+  </div>
+</body>
+</html>

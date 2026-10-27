@@ -1,0 +1,26 @@
+# Node
+node_modules/
+dist/
+.npm/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.pytest_cache/
+*.egg-info/
+
+# Env & Secrets
+.env
+.env.local
+.env.*.local
+
+# Storage uploads
+uploads/
+*.pdf
+*.docx
+
+# OS
+.DS_Store
+Thumbs.db
