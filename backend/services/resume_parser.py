@@ -1,6 +1,7 @@
 import re
 import io
-from typing import List, Dict, Any, Tuple
+import os
+from typing import List, Dict, Any, Tuple, Optional
 from pypdf import PdfReader
 from docx import Document
 from backend.schemas.resume import (
@@ -15,28 +16,70 @@ GITHUB_REGEX = re.compile(r'(?:https?:\/\/)?(?:www\.)?github\.com\/([a-zA-Z0-9_-
 STREET_ADDRESS_REGEX = re.compile(r'\b\d{1,5}\s+[a-zA-Z0-9\.\s]+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Lane|Ln|Drive|Dr|Court|Ct|Apt|Suite|Unit|Terrace|Ter|Way|Place|Pl|Circle|Cir)\b', re.IGNORECASE)
 POSTAL_CODE_REGEX = re.compile(r'\b\d{5}(-\d{4})?\b|\b[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}\b')
 
-SECTION_PATTERNS = {
-    'summary': re.compile(r'^(professional\s+summary|summary|profile|about\s+me|objective)(\s*[:\-])?$', re.IGNORECASE),
-    'skills': re.compile(r'^(technical\s+skills|skills|core\s+competencies|technologies|tools)(\s*[:\-])?$', re.IGNORECASE),
-    'experience': re.compile(r'^(work\s+experience|professional\s+experience|experience|employment\s+history)(\s*[:\-])?$', re.IGNORECASE),
-    'education': re.compile(r'^(education|academic\s+background|qualifications)(\s*[:\-])?$', re.IGNORECASE),
-    'projects': re.compile(r'^(projects|personal\s+projects|key\s+projects|academic\s+projects)(\s*[:\-])?$', re.IGNORECASE),
-    'certifications': re.compile(r'^(certifications|licenses|credentials|certificates)(\s*[:\-])?$', re.IGNORECASE),
-    'achievements': re.compile(r'^(achievements|honors|awards|accomplishments)(\s*[:\-])?$', re.IGNORECASE),
-}
+MAX_FILE_SIZE_MB = 5
+MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+
+SUPPORTED_EXTENSIONS = {'.pdf', '.doc', '.docx', '.txt'}
+
+class FileParsingError(Exception):
+    pass
+
+class FileValidationError(Exception):
+    pass
+
+def validate_file(file_data: bytes, filename: str) -> Tuple[bool, str, Optional[str]]:
+    file_size_bytes = len(file_data)
+    if file_size_bytes > MAX_FILE_SIZE_BYTES:
+        size_mb = file_size_bytes / (1024 * 1024)
+        return False, (
+            f'File size ({size_mb:.2f} MB) exceeds maximum limit of {MAX_FILE_SIZE_MB} MB. '
+            'Please compress or upload a smaller file.'
+        ), None
+
+    if file_size_bytes == 0:
+        return False, 'Uploaded file is empty. Please verify your file.', None
+
+    ext = os.path.splitext(filename)[1].lower()
+    if ext not in SUPPORTED_EXTENSIONS:
+        return False, f'Unsupported file extension: {ext}. Supported formats: PDF, DOCX, DOC, TXT', None
+
+    file_type = ext.lstrip('.')
+    return True, '', file_type
 
 def clean_text(text: str) -> str:
     if not text:
         return ""
-    # Normalize unicode bullets
     text = re.sub(r'[\u2022\u2023\u25E6\u2043\u2219\u25AA\u25AB\uF0B7]', '\n• ', text)
-    # Remove control characters except standard whitespace
     text = re.sub(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', text)
-    # Normalize excessive newlines and whitespace
     text = re.sub(r'\r\n', '\n', text)
     text = re.sub(r'[ \t]+', ' ', text)
     text = re.sub(r'\n{3,}', '\n\n', text)
     return text.strip()
+
+def _extract_pdf_hyperlinks(file_data: bytes) -> str:
+    urls = []
+    try:
+        reader = PdfReader(io.BytesIO(file_data))
+        for page in reader.pages:
+            if '/Annots' not in page:
+                continue
+            annots = page.get('/Annots')
+            if not annots:
+                continue
+            for annot_ref in annots:
+                try:
+                    annot = annot_ref.get_object() if hasattr(annot_ref, 'get_object') else annot_ref
+                    if annot.get('/Subtype') != '/Link':
+                        continue
+                    action = annot.get('/A', {})
+                    uri = action.get('/URI', '')
+                    if uri and isinstance(uri, str) and uri.startswith('http'):
+                        urls.append(uri.strip())
+                except Exception:
+                    pass
+    except Exception:
+        pass
+    return '\n'.join(urls)
 
 def extract_text_from_pdf(file_bytes: bytes) -> str:
     try:
@@ -45,25 +88,75 @@ def extract_text_from_pdf(file_bytes: bytes) -> str:
         for page in reader.pages:
             t = page.extract_text() or ""
             extracted_pages.append(t)
-        return clean_text("\n".join(extracted_pages))
+        text = "\n".join(extracted_pages)
+        links = _extract_pdf_hyperlinks(file_bytes)
+        if links:
+            text += "\n" + links
+        return clean_text(text)
     except Exception as e:
         logger.error(f"PDF extraction error: {e}")
-        raise ValueError(f"Failed to extract text from PDF: {str(e)}")
+        raise FileParsingError(f"Failed to extract text from PDF: {str(e)}")
 
 def extract_text_from_docx(file_bytes: bytes) -> str:
     try:
         doc = Document(io.BytesIO(file_bytes))
         paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
-        # Also extract table text
         for table in doc.tables:
             for row in table.rows:
                 row_text = " | ".join(cell.text.strip() for cell in row.cells if cell.text.strip())
                 if row_text:
                     paragraphs.append(row_text)
-        return clean_text("\n".join(paragraphs))
+
+        text = "\n".join(paragraphs)
+        try:
+            for rel in doc.part.rels.values():
+                if 'hyperlink' in rel.reltype.lower():
+                    url = getattr(rel, '_target', None) or getattr(rel, 'target_ref', None)
+                    if isinstance(url, str) and url.startswith('http'):
+                        text += '\n' + url
+        except Exception:
+            pass
+
+        return clean_text(text)
     except Exception as e:
         logger.error(f"DOCX extraction error: {e}")
-        raise ValueError(f"Failed to extract text from DOCX: {str(e)}")
+        raise FileParsingError(f"Failed to extract text from DOCX: {str(e)}")
+
+def extract_text_from_doc(file_bytes: bytes) -> str:
+    raise FileParsingError(
+        'Legacy .doc format is not directly supported. '
+        'Please save or convert your document to .docx or .pdf format.'
+    )
+
+def extract_text(file_data: bytes, file_type: str) -> str:
+    if file_type == 'pdf':
+        return extract_text_from_pdf(file_data)
+    elif file_type == 'docx':
+        return extract_text_from_docx(file_data)
+    elif file_type == 'doc':
+        return extract_text_from_doc(file_data)
+    elif file_type == 'txt':
+        return clean_text(file_data.decode('utf-8', errors='ignore'))
+    else:
+        raise FileValidationError(f"Invalid file type: {file_type}. Supported: pdf, docx, txt")
+
+def parse_resume_file(file_data: bytes, filename: str) -> Tuple[str, dict]:
+    is_valid, error_msg, file_type = validate_file(file_data, filename)
+    if not is_valid:
+        raise FileValidationError(error_msg)
+
+    text = extract_text(file_data, file_type)
+    if not text.strip():
+        raise FileParsingError("No readable text could be extracted from the file.")
+
+    metadata = {
+        'filename': filename,
+        'file_type': file_type,
+        'file_size_bytes': len(file_data),
+        'text_length': len(text),
+        'success': True
+    }
+    return text, metadata
 
 def extract_contact_info(text: str) -> Tuple[ContactInfo, List[str]]:
     contact = ContactInfo()
@@ -72,8 +165,7 @@ def extract_contact_info(text: str) -> Tuple[ContactInfo, List[str]]:
     lines = [line.strip() for line in text.split('\n') if line.strip()]
     if lines:
         first_line = lines[0]
-        # If first line is not a heading or contact info, treat as name
-        if len(first_line) < 50 and not '@' in first_line and not any(kw in first_line.lower() for kw in ['resume', 'curriculum', 'vitae']):
+        if len(first_line) < 50 and '@' not in first_line and not any(kw in first_line.lower() for kw in ['resume', 'curriculum', 'vitae']):
             contact.name = first_line
 
     emails = EMAIL_REGEX.findall(text)
@@ -94,15 +186,23 @@ def extract_contact_info(text: str) -> Tuple[ContactInfo, List[str]]:
     if github_matches:
         contact.github = f"https://github.com/{github_matches[0]}"
 
-    # Privacy check: Street Address
     if STREET_ADDRESS_REGEX.search(text):
         privacy_flags.append("Full street address detected. For safety and modern ATS best practices, only City and State/Country are recommended.")
 
-    # Privacy check: Postal code
     if POSTAL_CODE_REGEX.search(text):
         privacy_flags.append("Postal/ZIP code detected. Consider removing to reduce unconscious bias and unnecessary personal exposure.")
 
     return contact, privacy_flags
+
+SECTION_PATTERNS = {
+    'summary': re.compile(r'^(professional\s+summary|summary|profile|about\s+me|objective)(\s*[:\-])?$', re.IGNORECASE),
+    'skills': re.compile(r'^(technical\s+skills|skills|core\s+competencies|technologies|tools)(\s*[:\-])?$', re.IGNORECASE),
+    'experience': re.compile(r'^(work\s+experience|professional\s+experience|experience|employment\s+history)(\s*[:\-])?$', re.IGNORECASE),
+    'education': re.compile(r'^(education|academic\s+background|qualifications)(\s*[:\-])?$', re.IGNORECASE),
+    'projects': re.compile(r'^(projects|personal\s+projects|key\s+projects|academic\s+projects)(\s*[:\-])?$', re.IGNORECASE),
+    'certifications': re.compile(r'^(certifications|licenses|credentials|certificates)(\s*[:\-])?$', re.IGNORECASE),
+    'achievements': re.compile(r'^(achievements|honors|awards|accomplishments)(\s*[:\-])?$', re.IGNORECASE),
+}
 
 def segment_sections(text: str) -> Dict[str, str]:
     lines = text.split('\n')
@@ -114,15 +214,14 @@ def segment_sections(text: str) -> Dict[str, str]:
         cleaned = line.strip()
         if not cleaned:
             continue
-        
-        # Check if line looks like a section header (short, matches pattern)
+
         if len(cleaned) < 45:
             matched_sec = None
             for sec_name, pattern in SECTION_PATTERNS.items():
                 if pattern.match(cleaned):
                     matched_sec = sec_name
                     break
-            
+
             if matched_sec:
                 if current_content:
                     sections[current_section] = "\n".join(current_content)
@@ -144,11 +243,11 @@ def parse_experience_section(content: str) -> List[ExperienceEntry]:
 
     blocks = content.split('\n• ')
     first_block = blocks[0].split('\n')
-    
+
     current_title = "Role"
     current_company = "Company"
     bullets = []
-    
+
     for i, line in enumerate(first_block):
         if i == 0 and len(line) < 60:
             parts = re.split(r'[-–|at]\s+', line)
@@ -176,7 +275,7 @@ def parse_education_section(content: str) -> List[EducationEntry]:
     entries = []
     if not content:
         return entries
-    
+
     lines = [l.strip() for l in content.split('\n') if l.strip()]
     degree = "Degree / Field of Study"
     institution = "University / College"
@@ -200,26 +299,18 @@ def parse_education_section(content: str) -> List[EducationEntry]:
     return entries
 
 def parse_resume_bytes(file_bytes: bytes, filename: str) -> ParsedResume:
-    ext = filename.lower().split('.')[-1]
-    if ext == 'pdf':
-        raw_text = extract_text_from_pdf(file_bytes)
-    elif ext in ['docx', 'doc']:
-        raw_text = extract_text_from_docx(file_bytes)
-    elif ext == 'txt':
-        raw_text = clean_text(file_bytes.decode('utf-8', errors='ignore'))
-    else:
-        raise ValueError(f"Unsupported document format: {ext}. Accepted formats: PDF, DOCX, TXT")
+    text, meta = parse_resume_file(file_bytes, filename)
 
-    contact, privacy_flags = extract_contact_info(raw_text)
-    sections = segment_sections(raw_text)
-    
+    contact, privacy_flags = extract_contact_info(text)
+    sections = segment_sections(text)
+
     summary = sections.get('summary', None)
     experience = parse_experience_section(sections.get('experience', ''))
     education = parse_education_section(sections.get('education', ''))
-    
+
     detected_sections = list(sections.keys())
-    word_count = len(raw_text.split())
-    
+    word_count = len(text.split())
+
     warnings = []
     if word_count < 200:
         warnings.append("Resume word count is low (< 200 words). Ensure complete descriptions of your projects and experience.")
@@ -230,7 +321,7 @@ def parse_resume_bytes(file_bytes: bytes, filename: str) -> ParsedResume:
         warnings.append("No dedicated 'Skills' section detected. Adding an explicit Skills section improves ATS indexing.")
 
     return ParsedResume(
-        raw_text=raw_text,
+        raw_text=text,
         contact=contact,
         summary=summary,
         experience=experience,

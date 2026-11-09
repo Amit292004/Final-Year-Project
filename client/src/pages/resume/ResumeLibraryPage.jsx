@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import {
   UploadCloud,
   FileText,
@@ -57,7 +58,7 @@ export function ResumeLibraryPage() {
   };
 
   const handleUpload = async (e) => {
-    e.preventDefault();
+    if (e?.preventDefault) e.preventDefault();
     if (!file) {
       setUploadError('Please select a PDF or DOCX resume file.');
       return;
@@ -80,8 +81,11 @@ export function ResumeLibraryPage() {
       setUploadModalOpen(false);
       setFile(null);
       await loadResumes();
+      toast.success('Resume uploaded and parsed successfully!');
     } catch (err) {
-      setUploadError(err.message || 'Failed to upload and parse resume.');
+      const msg = err.message || 'Failed to upload and parse resume.';
+      setUploadError(msg);
+      toast.error(msg);
     } finally {
       setUploading(false);
     }
@@ -92,8 +96,9 @@ export function ResumeLibraryPage() {
     try {
       await apiRequest(`/resumes/${id}`, { method: 'DELETE' });
       setResumes(resumes.filter(r => r.id !== id));
+      toast.success('Resume deleted successfully');
     } catch (err) {
-      alert(err.message || 'Failed to delete resume.');
+      toast.error(err.message || 'Failed to delete resume.');
     }
   };
 
@@ -108,9 +113,16 @@ export function ResumeLibraryPage() {
           </p>
         </div>
 
-        <Button variant="primary" size="md" icon={Plus} onClick={() => setUploadModalOpen(true)}>
-          Upload Resume
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link to="/ats-scorer">
+            <Button variant="outline" size="md" icon={BarChart3}>
+              ATS Scorer & Diagnostics
+            </Button>
+          </Link>
+          <Button variant="primary" size="md" icon={Plus} onClick={() => setUploadModalOpen(true)}>
+            Upload Resume
+          </Button>
+        </div>
       </div>
 
       {/* Resume Grid or Empty State */}
@@ -215,7 +227,7 @@ export function ResumeLibraryPage() {
           )}
 
           {/* Drag and Drop Zone */}
-          <div className="border-2 border-dashed border-borderStandard rounded-standard p-6 text-center hover:border-signature bg-ivory/50 transition cursor-pointer relative">
+          <div className="border-2 border-dashed border-surfaceBorder rounded-standard p-6 text-center hover:border-brandOrange bg-surface/50 transition cursor-pointer relative">
             <input
               type="file"
               accept=".pdf,.docx,.txt"

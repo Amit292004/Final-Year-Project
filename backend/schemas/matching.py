@@ -33,4 +33,7 @@ class JobMatchResult(BaseModel):
     missing_skills: List[MissingSkill] = []
     supporting_passages: List[Dict[str, Any]] = []
     recommendations: List[str] = []
+    matched_keywords: List[str] = []
+    missing_keywords: List[str] = []
+    skills_gap: List[str] = []
     confidence: float = 0.95

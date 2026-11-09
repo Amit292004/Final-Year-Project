@@ -99,6 +99,9 @@ router.post('/matches', requireAuth, aiLimiter, async (req, res, next) => {
       matched_skills: matchResult.matched_skills,
       partial_matches: matchResult.partial_matches,
       missing_skills: matchResult.missing_skills,
+      matched_keywords: matchResult.matched_keywords || [],
+      missing_keywords: matchResult.missing_keywords || [],
+      skills_gap: matchResult.skills_gap || [],
       supporting_passages: matchResult.supporting_passages,
       recommendations: matchResult.recommendations,
       created_at: new Date().toISOString()

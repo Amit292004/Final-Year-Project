@@ -110,5 +110,50 @@ export const aiClient = {
       target_role: targetRole
     });
     return res.data;
+  },
+
+  async analyzeResume(fileBuffer, filename, jobDescription = '', userId = 'demo-user-123') {
+    const FormData = (await import('form-data')).default;
+    const form = new FormData();
+    form.append('resume', fileBuffer, filename);
+    form.append('job_description', jobDescription || '');
+
+    const res = await client.post('/api/v1/analyze-resume', form, {
+      headers: {
+        ...form.getHeaders(),
+        'x-user-id': userId
+      }
+    });
+    return res.data;
+  },
+
+  async getHistory(userId = 'demo-user-123') {
+    const res = await client.get('/api/v1/history', {
+      headers: { 'x-user-id': userId }
+    });
+    return res.data;
+  },
+
+  async deleteHistoryEntry(analysisId, userId = 'demo-user-123') {
+    const res = await client.delete(`/api/v1/history/${analysisId}`, {
+      headers: { 'x-user-id': userId }
+    });
+    return res.data;
+  },
+
+  async generatePdfReport(analysisData, userId = 'demo-user-123') {
+    const res = await client.post('/api/v1/generate-pdf', analysisData, {
+      headers: { 'x-user-id': userId },
+      responseType: 'arraybuffer'
+    });
+    return res.data;
+  },
+
+  async getHistoryPdfReport(analysisId, userId = 'demo-user-123') {
+    const res = await client.get(`/api/v1/history/${analysisId}/pdf`, {
+      headers: { 'x-user-id': userId },
+      responseType: 'arraybuffer'
+    });
+    return res.data;
   }
 };

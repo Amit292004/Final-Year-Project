@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import {
   Map,
   CheckCircle2,
@@ -42,17 +43,26 @@ export function LearningRoadmapPage() {
   const handleGenerateRoadmap = async () => {
     setGenerating(true);
     try {
-      const data = await apiRequest('/roadmaps', {
+      // Pull missing or unvalidated skills from skill gaps dynamically
+      const gapData = await apiRequest('/skills/gaps').catch(() => ({ gaps: [] }));
+      const needsProof = (gapData.gaps || [])
+        .filter(g => g.status === 'missing' || g.status === 'unvalidated')
+        .map(g => g.skill_name);
+
+      const skillsToLearn = needsProof.length > 0 ? needsProof.slice(0, 5) : ['Docker', 'PostgreSQL Optimization', 'System Design Patterns', 'CI/CD Automation'];
+
+      await apiRequest('/roadmaps', {
         method: 'POST',
         body: JSON.stringify({
           targetRole: 'Software Engineer',
-          missingSkills: ['Docker', 'PostgreSQL Optimization', 'System Design Patterns', 'CI/CD Automation'],
+          missingSkills: skillsToLearn,
           weeklyHours: 10
         })
       });
       await loadRoadmaps();
+      toast.success('Learning roadmap generated successfully!');
     } catch (e) {
-      alert('Failed to generate roadmap.');
+      toast.error('Failed to generate roadmap: ' + (e.message || e));
     } finally {
       setGenerating(false);
     }
@@ -72,11 +82,12 @@ export function LearningRoadmapPage() {
           t.id === taskId ? { ...t, status: nextStatus } : t
         );
         const comp = updatedTasks.filter(t => t.status === 'completed').length;
-        const pct = Math.round((comp / updatedTasks.length) * 100);
+        const pct = updatedTasks.length > 0 ? Math.round((comp / updatedTasks.length) * 100) : 0;
         setActiveRoadmap({ ...activeRoadmap, tasks: updatedTasks, progress_percentage: pct });
       }
+      toast.success(nextStatus === 'completed' ? 'Milestone completed!' : 'Milestone marked pending');
     } catch (e) {
-      alert('Failed to update task.');
+      toast.error('Failed to update task.');
     }
   };
 
@@ -153,10 +164,12 @@ export function LearningRoadmapPage() {
                 return (
                   <Card
                     key={task.id}
-                    className={`transition-all border-l-4 ${
-                      isDone ? 'border-l-semanticSuccess bg-white opacity-80' : 'border-l-signature bg-white shadow-sm'
+                    padded={false}
+                    className={`transition-all relative overflow-hidden p-5 ${
+                      isDone ? 'bg-white opacity-80' : 'bg-white shadow-sm'
                     }`}
                   >
+                    <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${isDone ? 'bg-semanticSuccess' : 'bg-signature'}`} />
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-start gap-3">
                         <button

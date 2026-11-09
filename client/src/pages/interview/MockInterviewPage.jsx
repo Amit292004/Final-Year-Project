@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import {
   MessagesSquare,
   Mic,
@@ -10,7 +12,9 @@ import {
   CheckCircle2,
   AlertTriangle,
   RotateCcw,
-  Volume2
+  Volume2,
+  Check,
+  X
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
@@ -19,6 +23,7 @@ import { ScoreGauge } from '../../components/ui/ScoreGauge';
 import { apiRequest } from '../../lib/apiClient';
 
 export function MockInterviewPage() {
+  const navigate = useNavigate();
   const [viewState, setViewState] = useState('setup'); // setup, active, review
   const [targetRole, setTargetRole] = useState('Software Engineer');
   const [difficulty, setDifficulty] = useState('intermediate');
@@ -33,6 +38,7 @@ export function MockInterviewPage() {
   const [showHint, setShowHint] = useState(false);
   const [evaluating, setEvaluating] = useState(false);
   const [currentFeedback, setCurrentFeedback] = useState(null);
+  const [finalScore, setFinalScore] = useState(80);
 
   // Voice Recognition State
   const [isRecording, setIsRecording] = useState(false);
@@ -46,15 +52,19 @@ export function MockInterviewPage() {
       setSpeechSupported(true);
       const recog = new SpeechRecognition();
       recog.continuous = true;
-      recog.interimResults = true;
+      recog.interimResults = false;
       recog.lang = 'en-US';
 
       recog.onresult = (event) => {
         let transcript = '';
         for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            transcript += event.results[i][0].transcript;
+          }
         }
-        setCurrentAnswer((prev) => (prev ? prev + ' ' + transcript : transcript));
+        if (transcript.trim()) {
+          setCurrentAnswer((prev) => (prev ? prev.trim() + ' ' + transcript.trim() : transcript.trim()));
+        }
       };
 
       recog.onerror = () => setIsRecording(false);
@@ -62,6 +72,14 @@ export function MockInterviewPage() {
 
       recognitionRef.current = recog;
     }
+
+    return () => {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.abort();
+        } catch (e) {}
+      }
+    };
   }, []);
 
   const toggleRecording = () => {
@@ -97,8 +115,9 @@ export function MockInterviewPage() {
       setShowHint(false);
       setCurrentFeedback(null);
       setViewState('active');
+      toast.success('Interview session prepared!');
     } catch (err) {
-      alert(err.message || 'Failed to generate interview.');
+      toast.error(err.message || 'Failed to generate interview.');
     } finally {
       setLoading(false);
     }
@@ -131,8 +150,9 @@ export function MockInterviewPage() {
       updated[currentIndex].user_answer = currentAnswer;
       updated[currentIndex].evaluation = evalData;
       setQuestions(updated);
+      toast.success('Answer evaluated!');
     } catch (err) {
-      alert('Failed to evaluate answer.');
+      toast.error('Failed to evaluate answer: ' + err.message);
     } finally {
       setEvaluating(false);
     }
@@ -151,7 +171,10 @@ export function MockInterviewPage() {
 
   const handleCompleteSession = async () => {
     try {
-      await apiRequest(`/interviews/${sessionId}/complete`, { method: 'POST' });
+      const res = await apiRequest(`/interviews/${sessionId}/complete`, { method: 'POST' });
+      if (res?.session?.overall_score != null) {
+        setFinalScore(res.session.overall_score);
+      }
       setViewState('review');
     } catch (e) {
       setViewState('review');
@@ -231,7 +254,7 @@ export function MockInterviewPage() {
               </div>
             </div>
 
-            <div className="p-4 rounded-standard bg-ivory border border-borderStandard text-xs text-textSecondary space-y-1">
+            <div className="p-4 rounded-standard bg-surface border border-surfaceBorder text-xs text-secondary space-y-1">
               <span className="font-bold text-carbon block">Curriculum Breakdown:</span>
               <p>• 1 Background Project Walkthrough</p>
               <p>• 2 Core Technical Problem-Solving Questions</p>
@@ -387,20 +410,20 @@ export function MockInterviewPage() {
 
               {/* STAR Alignment Check for behavioral */}
               {currentFeedback.star_alignment && (
-                <div className="p-3.5 bg-ivory rounded border border-borderStandard space-y-2 text-xs">
+                <div className="p-3.5 bg-surface rounded border border-surfaceBorder space-y-2 text-xs">
                   <span className="font-bold text-carbon block">STAR Framework Alignment:</span>
                   <div className="grid grid-cols-4 gap-2 text-center text-[11px] font-semibold">
-                    <span className={currentFeedback.star_alignment.situation ? 'text-semanticSuccess' : 'text-textDisabled'}>
-                      Situation {currentFeedback.star_alignment.situation ? '✓' : '✗'}
+                    <span className={`inline-flex items-center justify-center gap-1 ${currentFeedback.star_alignment.situation ? 'text-semanticSuccess' : 'text-textDisabled'}`}>
+                      Situation {currentFeedback.star_alignment.situation ? <Check className="w-3 h-3 text-emerald-500" /> : <X className="w-3 h-3 text-red-500" />}
                     </span>
-                    <span className={currentFeedback.star_alignment.task ? 'text-semanticSuccess' : 'text-textDisabled'}>
-                      Task {currentFeedback.star_alignment.task ? '✓' : '✗'}
+                    <span className={`inline-flex items-center justify-center gap-1 ${currentFeedback.star_alignment.task ? 'text-semanticSuccess' : 'text-textDisabled'}`}>
+                      Task {currentFeedback.star_alignment.task ? <Check className="w-3 h-3 text-emerald-500" /> : <X className="w-3 h-3 text-red-500" />}
                     </span>
-                    <span className={currentFeedback.star_alignment.action ? 'text-semanticSuccess' : 'text-textDisabled'}>
-                      Action {currentFeedback.star_alignment.action ? '✓' : '✗'}
+                    <span className={`inline-flex items-center justify-center gap-1 ${currentFeedback.star_alignment.action ? 'text-semanticSuccess' : 'text-textDisabled'}`}>
+                      Action {currentFeedback.star_alignment.action ? <Check className="w-3 h-3 text-emerald-500" /> : <X className="w-3 h-3 text-red-500" />}
                     </span>
-                    <span className={currentFeedback.star_alignment.result ? 'text-semanticSuccess' : 'text-textDisabled'}>
-                      Result {currentFeedback.star_alignment.result ? '✓' : '✗'}
+                    <span className={`inline-flex items-center justify-center gap-1 ${currentFeedback.star_alignment.result ? 'text-semanticSuccess' : 'text-textDisabled'}`}>
+                      Result {currentFeedback.star_alignment.result ? <Check className="w-3 h-3 text-emerald-500" /> : <X className="w-3 h-3 text-red-500" />}
                     </span>
                   </div>
                 </div>
@@ -453,14 +476,14 @@ export function MockInterviewPage() {
             </div>
 
             <div className="flex justify-center py-4">
-              <ScoreGauge score={82} maxScore={100} size={150} sublabel="Overall Interview Score" />
+              <ScoreGauge score={finalScore} maxScore={100} size={150} sublabel="Overall Interview Score" />
             </div>
 
             <div className="flex justify-center gap-3 pt-4 border-t border-borderStandard">
               <Button variant="outline" size="md" icon={RotateCcw} onClick={() => setViewState('setup')}>
                 Retake Another Interview
               </Button>
-              <Button variant="primary" size="md" onClick={() => window.location.href = '/dashboard'}>
+              <Button variant="primary" size="md" onClick={() => navigate('/dashboard')}>
                 Return to Dashboard
               </Button>
             </div>

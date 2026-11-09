@@ -7,15 +7,15 @@ router.get('/subscription', requireAuth, async (req, res) => {
   res.json({
     success: true,
     subscription: {
-      plan_tier: 'pro_preview',
+      plan_tier: 'full_access',
       status: 'active',
-      billing_gateway: 'unconfigured',
-      message: 'Payment gateway integration is currently unconfigured. All SaaS candidate intelligence features are fully unlocked for academic and testing purposes.',
+      license: 'Academic & Portfolio Edition',
+      message: 'Full unrestricted candidate intelligence access. All 7 career modules are enabled with zero paywalls.',
       limits: {
-        resumes_per_month: 25,
-        assessments_per_month: 50,
+        resumes_per_month: 'unlimited',
+        assessments_per_month: 'unlimited',
         ai_rewrites_unlimited: true,
-        mock_interviews_per_month: 20
+        mock_interviews_per_month: 'unlimited'
       }
     }
   });

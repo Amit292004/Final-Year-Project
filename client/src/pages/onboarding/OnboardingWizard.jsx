@@ -65,8 +65,8 @@ export function OnboardingWizard() {
   };
 
   return (
-    <div className="min-h-screen bg-ivory flex items-center justify-center p-4 sm:p-6 lg:p-8">
-      <Card className="max-w-2xl w-full border-borderStrong shadow-xl bg-white p-6 sm:p-10 space-y-8">
+    <div className="min-h-screen bg-obsidian flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      <Card className="max-w-2xl w-full border-surfaceBorder shadow-2xl bg-surfaceCard p-6 sm:p-10 space-y-8">
         {/* Progress Header */}
         <div className="space-y-3">
           <div className="flex justify-between items-center text-xs text-textMuted font-semibold uppercase tracking-wider">
@@ -179,7 +179,8 @@ export function OnboardingWizard() {
                         : 'border-borderStandard bg-white text-textSecondary hover:border-borderStrong'
                     }`}
                   >
-                    {skill} {selected && '✓'}
+                    <span>{skill}</span>
+                    {selected && <Check className="w-3 h-3 inline ml-1.5" />}
                   </button>
                 );
               })}

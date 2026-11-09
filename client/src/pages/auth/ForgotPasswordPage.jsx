@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Mail, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
+import { AnimateIn } from '../../components/ui/AnimateIn';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function ForgotPasswordPage() {
@@ -47,9 +48,9 @@ export function ForgotPasswordPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <AnimateIn delay={0} className="space-y-6">
       <div>
-        <h2 className="font-headline font-extrabold text-2xl text-carbon text-center">
+        <h2 className="font-headline font-black text-2xl text-carbon text-center">
           Reset Your Password
         </h2>
         <p className="mt-1 text-xs text-textSecondary text-center">
@@ -79,6 +80,6 @@ export function ForgotPasswordPage() {
           <span>Back to Sign In</span>
         </Link>
       </div>
-    </div>
+    </AnimateIn>
   );
 }

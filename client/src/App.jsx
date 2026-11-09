@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Layouts
@@ -17,6 +18,7 @@ import { DashboardPage } from './pages/dashboard/DashboardPage';
 import { ResumeLibraryPage } from './pages/resume/ResumeLibraryPage';
 import { ResumeEditorPage } from './pages/resume/ResumeEditorPage';
 import { AssessmentReportPage } from './pages/resume/AssessmentReportPage';
+import { AtsScorerPage } from './pages/resume/AtsScorerPage';
 import { JobMatchingPage } from './pages/matching/JobMatchingPage';
 import { SkillGapPage } from './pages/skills/SkillGapPage';
 import { LearningRoadmapPage } from './pages/roadmap/LearningRoadmapPage';
@@ -31,8 +33,11 @@ function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   if (loading) {
     return (
-      <div className="min-h-screen bg-ivory flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-signature border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-obsidian flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-3 border-signature border-t-transparent rounded-full animate-spin" />
+          <p className="text-xs font-bold text-textMuted uppercase tracking-wider">Verifying Session...</p>
+        </div>
       </div>
     );
   }
@@ -46,6 +51,35 @@ export function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 3500,
+            style: {
+              background: '#171717',
+              color: '#FFFFFF',
+              fontSize: '13px',
+              borderRadius: '9px',
+              padding: '10px 14px',
+              border: '1px solid #262626',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
+              fontFamily: 'Inter, system-ui, sans-serif'
+            },
+            success: {
+              iconTheme: {
+                primary: '#10B981',
+                secondary: '#FFFFFF',
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: '#EF4444',
+                secondary: '#FFFFFF',
+              },
+            },
+          }}
+        />
+
         <Routes>
           {/* Public marketing pages */}
           <Route element={<PublicLayout />}>
@@ -79,6 +113,7 @@ export function App() {
           >
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/resumes" element={<ResumeLibraryPage />} />
+            <Route path="/ats-scorer" element={<AtsScorerPage />} />
             <Route path="/resumes/:resumeId/edit" element={<ResumeEditorPage />} />
             <Route path="/resumes/:resumeId/assessment" element={<AssessmentReportPage />} />
             <Route path="/matching" element={<JobMatchingPage />} />

@@ -11,9 +11,22 @@ router.post('/', requireAuth, async (req, res, next) => {
     const userId = req.user.id;
     const { targetRole, missingSkills, weeklyHours } = req.body;
 
+    let skillsToBridge = missingSkills;
+    if (!skillsToBridge || skillsToBridge.length === 0) {
+      const userAssessments = Array.from(localStore.assessments.values())
+        .filter(a => a.user_id === userId)
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      if (userAssessments.length > 0) {
+        const latest = userAssessments[0];
+        const unvalidated = latest.skill_validation_details?.unvalidated || [];
+        const missingKw = latest.missing_keywords || latest.jd_comparison?.missing_keywords || [];
+        skillsToBridge = [...new Set([...unvalidated, ...missingKw])].slice(0, 5);
+      }
+    }
+
     const generated = await aiClient.generateRoadmap({
       targetRole: targetRole || 'Software Engineer',
-      missingSkills: missingSkills || ['Docker', 'PostgreSQL', 'System Design', 'CI/CD'],
+      missingSkills: skillsToBridge && skillsToBridge.length > 0 ? skillsToBridge : ['Docker', 'PostgreSQL', 'System Design', 'CI/CD'],
       weeklyHours: weeklyHours || 10
     });
 

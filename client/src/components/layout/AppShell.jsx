@@ -7,7 +7,7 @@ export function AppShell() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-ivory overflow-hidden">
+    <div className="flex h-screen bg-obsidian text-foreground overflow-hidden">
       {/* Sidebar */}
       <Sidebar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
 

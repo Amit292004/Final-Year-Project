@@ -2,19 +2,461 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Bounce Back Academy Architecture Palette */
+  --background: #09090b;
+  --foreground: #fafafa;
+  --secondary: #a1a1aa;
+  
+  --surface: #111114;
+  --surface-card: #18181b;
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --surface-highlight: rgba(255, 255, 255, 0.03);
+
+  --brand-orange: #f97316;
+  --brand-orange-hover: #ea580c;
+  --brand-orange-light: rgba(249, 115, 22, 0.1);
+  --brand-orange-border: rgba(249, 115, 22, 0.25);
+
+  --success: #10b981;
+  --error: #ef4444;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px -2px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 20px -5px rgba(255, 255, 255, 0.08);
+  --shadow-glow-orange: 0 0 25px -5px rgba(249, 115, 22, 0.25);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --transition: all 0.15s ease;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 @layer base {
-  body {
-    @apply bg-ivory text-textPrimary font-sans antialiased;
+  *, ::before, ::after {
+    border-color: rgba(255, 255, 255, 0.08);
   }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    color-scheme: dark;
+    background: #09090b !important;
+    background-color: #09090b !important;
+    color: #fafafa !important;
+  }
+
+  body {
+    background: #09090b !important;
+    background-color: #09090b !important;
+    color: #fafafa !important;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+    min-height: 100vh;
+  }
+
   h1, h2, h3, h4, h5, h6 {
-    @apply font-headline;
+    font-family: 'Manrope', system-ui, sans-serif;
+    color: #fafafa;
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Explicit Bounce Back Architecture Utilities */
+.bg-obsidian { background-color: #09090b !important; }
+.bg-surface { background-color: #111114 !important; }
+.bg-surfaceCard { background-color: #18181b !important; }
+.border-surfaceBorder { border-color: rgba(255, 255, 255, 0.08) !important; }
+.border-brandOrangeBorder { border-color: rgba(249, 115, 22, 0.25) !important; }
+.bg-brandOrange { background-color: #f97316 !important; }
+.bg-brandOrangeHover:hover { background-color: #ea580c !important; }
+.text-brandOrange { color: #f97316 !important; }
+.text-foreground { color: #fafafa !important; }
+.text-secondary { color: #a1a1aa !important; }
+.text-muted { color: #71717a !important; }
+
+/* ==============================================================
+   Bounce Back Academy Utility Classes & Design Tokens
+   ============================================================== */
+
+/* Subtle micro-noise texture */
+.noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Top volumetric ambient lighting beam */
+.beam {
+  position: absolute;
+  top: -140px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1000px;
+  height: 520px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
+  background: radial-gradient(ellipse at 50% 20%, rgba(249, 115, 22, 0.18) 0%, rgba(249, 115, 22, 0.05) 45%, transparent 70%);
+}
+
+/* Live student / candidate indicator chip */
+.liveChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.38rem 0.92rem;
+  border-radius: 999px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--foreground);
+  opacity: 0.9;
+  letter-spacing: 0.01em;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  animation: pulse-dot 2s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Bounce Back Academy Monospace Numbered Eyebrows */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  margin-bottom: 0.9rem;
+}
+
+.eyebrowNum {
+  color: var(--brand-orange);
+  font-weight: 700;
+}
+
+/* 1px Hairline Border Grid System (from FeaturesGrid.module.css) */
+.hairline-grid {
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface-border);
+}
+
+.hairline-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.85rem 1.6rem;
+  background: var(--surface);
+  text-decoration: none;
+  color: var(--foreground);
+  transition: background-color 0.15s ease, transform 0.15s ease;
+  position: relative;
+}
+
+.hairline-card:hover {
+  background: var(--surface-card);
+}
+
+/* Tactile & Premium Cards */
+.tactile-card {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tactile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.18);
+  background: var(--surface-card);
+}
+
+.premium-card {
+  background: var(--surface-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.premium-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -10px rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Glassmorphism helpers */
+.glass-panel {
+  background: rgba(17, 17, 20, 0.85);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.glass-morphism {
+  background: var(--surface);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid var(--surface-border);
+  box-shadow: var(--shadow-md);
+}
+
+/* Haptic Buttons */
+.haptic-btn {
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.haptic-btn:active {
+  transform: scale(0.96) translateY(1px);
+}
+
+.btn-primary {
+  background: var(--foreground);
+  color: var(--background);
+  padding: 0.72rem 1.45rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--foreground);
+  border: 1px solid var(--surface-border);
+  padding: 0.72rem 1.45rem;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+  background: var(--surface-card);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Kinetic Gradient Text */
+.text-gradient {
+  background: linear-gradient(180deg, var(--foreground) 0%, rgba(255, 255, 255, 0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.kinetic-text {
+  background: linear-gradient(90deg,
+      var(--foreground) 0%,
+      var(--brand-orange) 40%,
+      #f59e0b 60%,
+      var(--foreground) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: kineticFlow 5s linear infinite;
+}
+
+@keyframes kineticFlow {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Icon Box (38px x 38px) */
+.iconBox {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  border: 1px solid var(--surface-border);
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+  opacity: 0.85;
+  transition: opacity 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+/* Skeleton Loaders */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.09) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* Shimmer Highlight Effect */
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Custom Obsidian Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-orange);
+}
+
+/* Animations */
+@layer utilities {
+  .animate-in {
+    animation-duration: 250ms;
+    animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
+    animation-fill-mode: both;
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 300ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+
+  .animate-fade-down {
+    animation: fadeDown 300ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 250ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  }
+
+  .fade-in {
+    animation-name: fadeIn;
+  }
+
+  .zoom-in-95 {
+    animation-name: zoomIn95;
+  }
+
+  .slide-in-from-left {
+    animation-name: slideInLeft;
+  }
+
+  .slide-in-from-bottom-2 {
+    animation-name: slideInBottom;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
 /* Custom subtle scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -22,7 +464,25 @@
 ::-webkit-scrollbar-thumb {
   background: #D6D3D1;
   border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #A3A3A3;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+/* Print styles for ATS Report generation */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  header, aside, nav, button, .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
 }

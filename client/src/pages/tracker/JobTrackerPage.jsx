@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 import {
   KanbanSquare,
   Table as TableIcon,
@@ -53,7 +54,7 @@ export function JobTrackerPage() {
   }, []);
 
   const handleCreateApplication = async (e) => {
-    e.preventDefault();
+    if (e?.preventDefault) e.preventDefault();
     if (!company || !role) return;
 
     try {
@@ -69,15 +70,19 @@ export function JobTrackerPage() {
           nextAction
         })
       });
-      setApplications([res.application, ...applications]);
+      setApplications(prev => [res.application, ...prev]);
       setModalOpen(false);
       // Reset
       setCompany('');
       setRole('');
+      setLocation('Remote');
+      setSalary('');
+      setStage('wishlist');
       setNotes('');
       setNextAction('');
+      toast.success('Opportunity added to tracker!');
     } catch (err) {
-      alert('Failed to save application.');
+      toast.error('Failed to save application: ' + err.message);
     }
   };
 
@@ -87,9 +92,10 @@ export function JobTrackerPage() {
         method: 'PATCH',
         body: JSON.stringify({ stage: newStage })
       });
-      setApplications(applications.map(a => a.id === appId ? { ...a, stage: newStage } : a));
+      setApplications(prev => prev.map(a => a.id === appId ? { ...a, stage: newStage } : a));
+      toast.success(`Moved to ${newStage}`);
     } catch (e) {
-      alert('Failed to update stage.');
+      toast.error('Failed to update stage.');
     }
   };
 
@@ -97,9 +103,10 @@ export function JobTrackerPage() {
     if (!confirm('Remove this application from your tracker?')) return;
     try {
       await apiRequest(`/applications/${appId}`, { method: 'DELETE' });
-      setApplications(applications.filter(a => a.id !== appId));
+      setApplications(prev => prev.filter(a => a.id !== appId));
+      toast.success('Application removed');
     } catch (e) {
-      alert('Failed to delete.');
+      toast.error('Failed to delete.');
     }
   };
 

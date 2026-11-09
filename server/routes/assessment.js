@@ -1,11 +1,99 @@
 import express from 'express';
+import multer from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import { requireAuth } from '../middleware/auth.js';
 import { aiLimiter } from '../middleware/rateLimit.js';
 import { aiClient } from '../services/aiClient.js';
 import { supabaseAdmin, localStore } from '../services/supabase.js';
 
+const upload = multer({
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (file.originalname.match(/\.(pdf|docx|txt)$/i) || ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'].includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only PDF, DOCX, and TXT resume files are supported.'));
+    }
+  }
+});
+
 const router = express.Router();
+
+// Shradha Khapra exact analyze-resume pipeline endpoint
+router.post('/analyze-resume', requireAuth, aiLimiter, upload.single('resume'), async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: { message: 'Please upload a resume file (PDF, DOCX, or TXT).' } });
+    }
+    const jobDescription = req.body.job_description || req.body.jobDescription || '';
+    const userId = req.user.id || 'demo-user-123';
+
+    const analysis = await aiClient.analyzeResume(req.file.buffer, req.file.originalname, jobDescription, userId);
+
+    res.status(200).json({
+      success: true,
+      analysis
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// User analysis history
+router.get('/history', requireAuth, async (req, res, next) => {
+  try {
+    const userId = req.user.id || 'demo-user-123';
+    const history = await aiClient.getHistory(userId);
+    res.json({ success: true, history });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Delete history entry
+router.delete('/history/:analysisId', requireAuth, async (req, res, next) => {
+  try {
+    const userId = req.user.id || 'demo-user-123';
+    const result = await aiClient.deleteHistoryEntry(req.params.analysisId, userId);
+    res.json({ success: true, ...result });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Generate and export report PDF/HTML
+router.post('/generate-pdf', requireAuth, async (req, res, next) => {
+  try {
+    const userId = req.user.id || 'demo-user-123';
+    const reportBuffer = await aiClient.generatePdfReport(req.body, userId);
+    const isPdf = Buffer.from(reportBuffer).slice(0, 4).toString() === '%PDF';
+    const contentType = isPdf ? 'application/pdf' : 'text/html';
+    const filename = isPdf ? 'ats_report.pdf' : 'ats_report.html';
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.send(reportBuffer);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Download history report PDF/HTML
+router.get('/history/:analysisId/pdf', requireAuth, async (req, res, next) => {
+  try {
+    const userId = req.user.id || 'demo-user-123';
+    const reportBuffer = await aiClient.getHistoryPdfReport(req.params.analysisId, userId);
+    const isPdf = Buffer.from(reportBuffer).slice(0, 4).toString() === '%PDF';
+    const contentType = isPdf ? 'application/pdf' : 'text/html';
+    const filename = isPdf ? `ats_report_${req.params.analysisId}.pdf` : `ats_report_${req.params.analysisId}.html`;
+
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.send(reportBuffer);
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.post('/', requireAuth, aiLimiter, async (req, res, next) => {
   try {
@@ -49,9 +137,17 @@ router.post('/', requireAuth, aiLimiter, async (req, res, next) => {
       strengths: assessmentResult.strengths,
       critical_issues: assessmentResult.critical_issues,
       missing_keywords: assessmentResult.missing_keywords,
+      matched_keywords: assessmentResult.matched_keywords || [],
       bullet_point_rewrites: assessmentResult.bullet_point_rewrites,
       recommendations: assessmentResult.recommendations,
       privacy_flags: assessmentResult.privacy_flags,
+      detailed_feedback: assessmentResult.detailed_feedback || [],
+      issues_summary: assessmentResult.issues_summary || [],
+      skill_validation_details: assessmentResult.skill_validation_details || null,
+      jd_comparison: assessmentResult.jd_comparison || null,
+      interpretation: assessmentResult.interpretation || '',
+      penalties: assessmentResult.penalties || {},
+      bonuses: assessmentResult.bonuses || {},
       scoring_version: assessmentResult.scoring_version,
       target_role: targetRole || 'Software Engineer',
       created_at: new Date().toISOString()
