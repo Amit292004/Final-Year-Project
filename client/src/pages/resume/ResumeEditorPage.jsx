@@ -191,7 +191,7 @@ export function ResumeEditorPage() {
           <div>
             <h1 className="font-headline font-bold text-xl text-carbon flex items-center gap-2">
               <span>{resume.title}</span>
-              {saveSuccess && <span className="text-xs text-semanticSuccess font-normal inline-flex items-center gap-1">Saved <Check className="w-3 h-3 text-emerald-500" /></span>}
+              {saveSuccess && <span className="text-xs text-semanticSuccess font-normal">Saved ✓</span>}
             </h1>
             <p className="text-xs text-textMuted">Target Role: {resume.target_role}</p>
           </div>
@@ -396,7 +396,7 @@ export function ResumeEditorPage() {
                 {/* Suggestions List */}
                 <div className="space-y-3 pt-1">
                   {aiRewrites.length === 0 ? (
-                    <div className="p-4 rounded-standard bg-surface border border-surfaceBorder text-center text-xs text-muted">
+                    <div className="p-4 rounded-standard bg-ivory text-center text-xs text-textMuted">
                       Click above to generate NLP rewrites for your current bullets.
                     </div>
                   ) : (

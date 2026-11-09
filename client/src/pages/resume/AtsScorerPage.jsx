@@ -22,22 +22,13 @@ import {
   Square,
   FileCheck,
   Search,
-  ExternalLink,
-  Layout,
-  Key,
-  Cpu,
-  BarChart3,
-  Target,
-  Activity,
-  Check,
-  X
+  ExternalLink
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
 import { ScoreGauge } from '../../components/ui/ScoreGauge';
 import { ProgressBar } from '../../components/ui/ProgressBar';
-import { AnimateIn } from '../../components/ui/AnimateIn';
 import {
   analyzeResumeFile,
   fetchAtsHistory,
@@ -263,10 +254,13 @@ export function AtsScorerPage() {
   // Score styling helpers
   const score = analysis?.ATS_score ?? analysis?.ats_score ?? 0;
   let scoreBadgeColor = 'bg-red-100 text-red-800 border-red-300';
+  let scoreEmoji = '❌';
   if (score >= 80) {
     scoreBadgeColor = 'bg-emerald-100 text-emerald-800 border-emerald-300';
+    scoreEmoji = '🌟';
   } else if (score >= 60) {
     scoreBadgeColor = 'bg-amber-100 text-amber-800 border-amber-300';
+    scoreEmoji = '👍';
   }
 
   const componentScores = analysis?.component_scores || {};
@@ -277,48 +271,44 @@ export function AtsScorerPage() {
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-12">
       {/* Top Banner & Tab Navigation */}
-      <AnimateIn delay={0}>
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-borderStandard pb-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="p-1.5 rounded-btn bg-signature/10 text-signature">
-                <FileCheck className="w-5 h-5" />
-              </span>
-              <h1 className="text-heading text-2xl text-carbon">
-                ATS Resume Scorer & Diagnostics
-              </h1>
-            </div>
-            <p className="text-xs text-textSecondary mt-1">
-              Deterministic 5-component scoring, project skill validation, fuzzy keyword coverage, and deep 10-issue diagnostic feedback.
-            </p>
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-borderStandard pb-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="p-1.5 rounded-md bg-signature/10 text-signature">
+              <Sparkles className="w-5 h-5" />
+            </span>
+            <h1 className="font-headline font-black text-2xl text-carbon">
+              ATS Resume Scorer & Diagnostics
+            </h1>
           </div>
-
-          <div className="flex items-center gap-1.5 bg-neutralLight/70 p-1 rounded-btn border border-borderStandard self-start">
-            <button
-              onClick={() => setActiveTab('scorer')}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-btn transition-colors ease-custom-out ${
-                activeTab === 'scorer'
-                  ? 'bg-white text-carbon font-bold shadow-subtle border border-borderStandard'
-                  : 'text-textSecondary hover:text-carbon'
-              }`}
-            >
-              <Target className="w-3.5 h-3.5 text-signature" />
-              <span>ATS Scorer</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('history')}
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-btn transition-colors ease-custom-out ${
-                activeTab === 'history'
-                  ? 'bg-white text-carbon font-bold shadow-subtle border border-borderStandard'
-                  : 'text-textSecondary hover:text-carbon'
-              }`}
-            >
-              <BarChart3 className="w-3.5 h-3.5 text-blue-600" />
-              <span>Analysis History ({history.length})</span>
-            </button>
-          </div>
+          <p className="text-xs text-textSecondary mt-1">
+            Algorithmic 5-component scoring, project skill validation, fuzzy keyword coverage, and deep 10-issue diagnostic feedback.
+          </p>
         </div>
-      </AnimateIn>
+
+        <div className="flex items-center gap-2 bg-neutralLight/70 p-1 rounded-btn border border-borderStandard self-start">
+          <button
+            onClick={() => setActiveTab('scorer')}
+            className={`px-3 py-1.5 text-xs font-bold rounded transition ${
+              activeTab === 'scorer'
+                ? 'bg-white text-signature shadow-sm'
+                : 'text-textSecondary hover:text-carbon'
+            }`}
+          >
+            🎯 ATS Scorer
+          </button>
+          <button
+            onClick={() => setActiveTab('history')}
+            className={`px-3 py-1.5 text-xs font-bold rounded transition ${
+              activeTab === 'history'
+                ? 'bg-white text-signature shadow-sm'
+                : 'text-textSecondary hover:text-carbon'
+            }`}
+          >
+            📊 Analysis History ({history.length})
+          </button>
+        </div>
+      </div>
 
       {/* ============================================================== */}
       {/* TAB 1: ATS SCORER */}
@@ -326,58 +316,55 @@ export function AtsScorerPage() {
       {activeTab === 'scorer' && (
         <div className="space-y-6">
           {/* Upload Configuration Area */}
-          <AnimateIn delay={1}>
-            <Card variant="elevated" className="p-6 border-borderStrong">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-borderStandard mb-6">
-                <div>
-                  <span className="text-overline text-textMuted font-semibold">
-                    ANALYSIS TARGET
-                  </span>
-                  <p className="text-sm font-semibold text-carbon mt-0.5">
-                    Select your scoring evaluation mode
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <label
-                    onClick={() => setAnalysisMode('general')}
-                    className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-btn border text-xs font-semibold cursor-pointer transition-all ease-custom-out ${
-                      analysisMode === 'general'
-                        ? 'border-signature bg-peach/50 text-burnt font-bold shadow-subtle'
-                        : 'border-borderStandard bg-white text-textSecondary hover:border-carbon/30'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="analysis_mode"
-                      checked={analysisMode === 'general'}
-                      onChange={() => setAnalysisMode('general')}
-                      className="hidden"
-                    />
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>General ATS Score</span>
-                  </label>
-
-                  <label
-                    onClick={() => setAnalysisMode('jd')}
-                    className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-btn border text-xs font-semibold cursor-pointer transition-all ease-custom-out ${
-                      analysisMode === 'jd'
-                        ? 'border-signature bg-peach/50 text-burnt font-bold shadow-subtle'
-                        : 'border-borderStandard bg-white text-textSecondary hover:border-carbon/30'
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="analysis_mode"
-                      checked={analysisMode === 'jd'}
-                      onChange={() => setAnalysisMode('jd')}
-                      className="hidden"
-                    />
-                    <Briefcase className="w-3.5 h-3.5" />
-                    <span>Job Description Comparison</span>
-                  </label>
-                </div>
+          <Card className="p-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-borderStandard mb-6">
+              <div>
+                <span className="text-[11px] font-bold text-textMuted uppercase tracking-wider block">
+                  Analysis Mode
+                </span>
+                <p className="text-sm font-semibold text-carbon mt-0.5">
+                  Select your scoring target
+                </p>
               </div>
+
+              <div className="flex items-center gap-3">
+                <label
+                  onClick={() => setAnalysisMode('general')}
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-btn border text-xs font-bold cursor-pointer transition ${
+                    analysisMode === 'general'
+                      ? 'border-signature bg-peach/40 text-burnt'
+                      : 'border-borderStandard bg-white text-textSecondary hover:border-carbon/30'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="analysis_mode"
+                    checked={analysisMode === 'general'}
+                    onChange={() => setAnalysisMode('general')}
+                    className="hidden"
+                  />
+                  <span>📄 General ATS Score</span>
+                </label>
+
+                <label
+                  onClick={() => setAnalysisMode('jd')}
+                  className={`flex items-center gap-2 px-3.5 py-2 rounded-btn border text-xs font-bold cursor-pointer transition ${
+                    analysisMode === 'jd'
+                      ? 'border-signature bg-peach/40 text-burnt'
+                      : 'border-borderStandard bg-white text-textSecondary hover:border-carbon/30'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="analysis_mode"
+                    checked={analysisMode === 'jd'}
+                    onChange={() => setAnalysisMode('jd')}
+                    className="hidden"
+                  />
+                  <span>🎯 Job Description Comparison</span>
+                </label>
+              </div>
+            </div>
 
             {/* Inputs Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -511,12 +498,7 @@ export function AtsScorerPage() {
                           className="hidden"
                         />
                       </label>
-                      {jdFile && (
-                        <p className="text-xs text-emerald-700 font-semibold mt-2 truncate flex items-center justify-center gap-1">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
-                          <span>{jdFile.name}</span>
-                        </p>
-                      )}
+                      {jdFile && <p className="text-xs text-emerald-700 font-semibold mt-2 truncate">✅ {jdFile.name}</p>}
                     </div>
                   )
                 ) : (
@@ -578,7 +560,6 @@ export function AtsScorerPage() {
               </div>
             )}
           </Card>
-          </AnimateIn>
 
           {/* ============================================================== */}
           {/* RESULTS DASHBOARD */}
@@ -633,22 +614,21 @@ export function AtsScorerPage() {
                 {/* 5 Component Scores Grid */}
                 <div className="mt-8 pt-6 border-t border-borderStandard grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                   {[
-                    { label: 'Formatting', key: 'formatting', max: 20, icon: Layout, desc: 'Section headers, font size, margins' },
-                    { label: 'Keywords & Skills', key: 'keywords', max: 25, icon: Key, desc: 'Technical skills, domain coverage' },
-                    { label: 'Content Quality', key: 'content', max: 25, icon: FileText, desc: 'Action verbs, metrics, bullet points' },
-                    { label: 'Skill Validation', key: 'skill_validation', max: 15, icon: CheckCircle2, desc: 'Proof in projects & experience' },
-                    { label: 'ATS Compatibility', key: 'ats_compatibility', max: 15, icon: Cpu, desc: 'Parsing reliability, contact clarity' }
+                    { label: 'Formatting', key: 'formatting', max: 20, icon: '📝', desc: 'Section headers, font size, margins' },
+                    { label: 'Keywords & Skills', key: 'keywords', max: 25, icon: '🔑', desc: 'Technical skills, domain coverage' },
+                    { label: 'Content Quality', key: 'content', max: 25, icon: '📄', desc: 'Action verbs, metrics, bullet points' },
+                    { label: 'Skill Validation', key: 'skill_validation', max: 15, icon: '✅', desc: 'Proof in projects & experience' },
+                    { label: 'ATS Compatibility', key: 'ats_compatibility', max: 15, icon: '🤖', desc: 'Parsing reliability, contact clarity' }
                   ].map((c) => {
                     const val = componentScores[c.key] ?? 0;
                     const pct = (val / c.max) * 100;
                     const barColor = pct >= 80 ? 'bg-emerald-600' : pct >= 60 ? 'bg-amber-500' : 'bg-red-500';
-                    const CompIcon = c.icon;
 
                     return (
-                      <div key={c.key} className="p-3.5 rounded-card bg-neutralLight/40 border border-borderStandard space-y-2 hover:border-borderStrong transition-colors">
+                      <div key={c.key} className="p-3 rounded-card bg-neutralLight/40 border border-borderStandard space-y-2">
                         <div className="flex items-center justify-between">
                           <span className="text-xs font-bold text-carbon flex items-center gap-1.5">
-                            <CompIcon className="w-3.5 h-3.5 text-signature" /> {c.label}
+                            <span>{c.icon}</span> {c.label}
                           </span>
                           <span className="text-xs font-mono font-bold text-carbon">
                             {val.toFixed(0)}/{c.max}
@@ -677,7 +657,7 @@ export function AtsScorerPage() {
                     <ul className="space-y-2 text-xs text-textSecondary">
                       {analysis.strengths.map((str, idx) => (
                         <li key={idx} className="flex items-start gap-2">
-                          <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                          <span className="text-emerald-600 font-bold shrink-0">✔</span>
                           <span>{str}</span>
                         </li>
                       ))}
@@ -698,7 +678,7 @@ export function AtsScorerPage() {
                     <ul className="space-y-2 text-xs text-textSecondary">
                       {analysis.critical_issues.map((iss, idx) => (
                         <li key={idx} className="flex items-start gap-2">
-                          <X className="w-3.5 h-3.5 text-red-500 shrink-0 mt-0.5" />
+                          <span className="text-red-600 font-bold shrink-0">✖</span>
                           <span className="text-red-800 font-medium">{iss}</span>
                         </li>
                       ))}
@@ -747,7 +727,7 @@ export function AtsScorerPage() {
                   {/* Validated Skills */}
                   <div className="space-y-3">
                     <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider block">
-                      Substantiated Skills ({skillDetails.validated?.length || 0})
+                      ✅ Substantiated Skills ({skillDetails.validated?.length || 0})
                     </span>
                     <div className="space-y-2 max-h-64 overflow-y-auto pr-1">
                       {skillDetails.validated && skillDetails.validated.length > 0 ? (
@@ -778,7 +758,7 @@ export function AtsScorerPage() {
                   {/* Unvalidated Skills */}
                   <div className="space-y-3">
                     <span className="text-xs font-bold text-amber-800 uppercase tracking-wider block">
-                      Unvalidated Skills ({skillDetails.unvalidated?.length || 0})
+                      ⚠️ Unvalidated Skills ({skillDetails.unvalidated?.length || 0})
                     </span>
                     <p className="text-[11px] text-textMuted">
                       These skills are listed in your skills section but lack concrete evidence in project descriptions or experience bullets.
@@ -790,7 +770,7 @@ export function AtsScorerPage() {
                             key={i}
                             className="px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-200"
                           >
-                            {s}
+                            ❌ {s}
                           </span>
                         ))
                       ) : (
@@ -836,7 +816,7 @@ export function AtsScorerPage() {
                     {/* Matched Keywords */}
                     <div className="space-y-2">
                       <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider block">
-                        Matched Keywords ({jdComparison.matched_keywords?.length || 0})
+                        ✅ Matched Keywords ({jdComparison.matched_keywords?.length || 0})
                       </span>
                       <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto">
                         {jdComparison.matched_keywords && jdComparison.matched_keywords.length > 0 ? (
@@ -857,7 +837,7 @@ export function AtsScorerPage() {
                     {/* Missing Keywords */}
                     <div className="space-y-2">
                       <span className="text-xs font-bold text-red-800 uppercase tracking-wider block">
-                        Missing Keywords ({jdComparison.missing_keywords?.length || 0})
+                        ❌ Missing Keywords ({jdComparison.missing_keywords?.length || 0})
                       </span>
                       <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto">
                         {jdComparison.missing_keywords && jdComparison.missing_keywords.length > 0 ? (
@@ -877,9 +857,8 @@ export function AtsScorerPage() {
 
                     {/* Skills Gap */}
                     <div className="space-y-2">
-                      <span className="text-xs font-bold text-amber-800 uppercase tracking-wider flex items-center gap-1.5">
-                        <Target className="w-3.5 h-3.5 text-amber-600" />
-                        Skills Gap ({jdComparison.skills_gap?.length || 0})
+                      <span className="text-xs font-bold text-amber-800 uppercase tracking-wider block">
+                        📊 Skills Gap ({jdComparison.skills_gap?.length || 0})
                       </span>
                       <div className="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto">
                         {jdComparison.skills_gap && jdComparison.skills_gap.length > 0 ? (
@@ -904,9 +883,8 @@ export function AtsScorerPage() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-headline font-bold text-lg text-carbon flex items-center gap-2">
-                      <Activity className="w-5 h-5 text-signature" />
-                      <span>Deep ATS Diagnostic Checks ({detailedFeedback.length} Flagged)</span>
+                    <h3 className="font-headline font-bold text-lg text-carbon">
+                      🔍 Deep ATS Diagnostic Checks ({detailedFeedback.length} Flagged)
                     </h3>
                     <p className="text-xs text-textMuted mt-0.5">
                       Detailed line-by-line checks for formatting, page length, verb repetition, metrics, privacy, and ATS compliance.

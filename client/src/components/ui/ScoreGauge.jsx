@@ -63,7 +63,7 @@ export function ScoreGauge({
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="rgba(255, 255, 255, 0.08)"
+            stroke="#E7E5E4"
             strokeWidth={strokeWidth}
             fill="transparent"
           />
@@ -87,13 +87,13 @@ export function ScoreGauge({
         {/* Center content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           <span
-            className="font-headline font-black text-foreground tracking-tight leading-none"
+            className="font-headline font-black text-carbon tracking-tight leading-none"
             style={{ fontSize: `${numberFontSize}px` }}
           >
             {Math.round(normalizedScore)}
           </span>
           <span
-            className="font-semibold text-secondary uppercase tracking-wider mt-1"
+            className="font-semibold text-textMuted uppercase tracking-wider mt-1"
             style={{ fontSize: `${sublabelFontSize}px` }}
           >
             / {maxScore}

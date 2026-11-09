@@ -225,7 +225,7 @@ export function CareerAdvisorPage() {
                         <span>Sources:</span>
                       </span>
                       {m.sources.map((src, sIdx) => (
-                        <span key={sIdx} className="bg-surface border border-borderStandard px-1.5 py-0.5 rounded text-foreground">
+                        <span key={sIdx} className="bg-ivory border border-borderStandard px-1.5 py-0.5 rounded">
                           {src.source_type}
                         </span>
                       ))}
@@ -255,7 +255,7 @@ export function CareerAdvisorPage() {
 
         {/* Suggested Prompts if thread is short */}
         {messages.length <= 2 && (
-          <div className="p-3 bg-surface border-t border-borderStandard flex flex-wrap gap-1.5 shrink-0">
+          <div className="p-3 bg-ivory/50 border-t border-borderStandard flex flex-wrap gap-1.5 shrink-0">
             {promptSuggestions.map((prompt, idx) => (
               <button
                 key={idx}

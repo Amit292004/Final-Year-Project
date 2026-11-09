@@ -14,16 +14,15 @@ export function Button({
   type = 'button',
   ...props
 }) {
-  const base = 'inline-flex items-center justify-center font-semibold transition-all duration-150 haptic-btn focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian disabled:opacity-50 disabled:pointer-events-none select-none rounded-btn';
+  const base = 'inline-flex items-center justify-center font-semibold transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none rounded-btn active:scale-[0.98]';
 
   const variants = {
-    primary: 'bg-brandOrange hover:bg-brandOrangeHover text-white focus-visible:ring-brandOrange shadow-sm hover:shadow-glow-orange border border-transparent',
-    white: 'bg-foreground text-background hover:bg-gray-200 focus-visible:ring-white shadow-sm border border-transparent font-bold',
-    secondary: 'bg-surface hover:bg-surfaceCard text-foreground focus-visible:ring-surfaceBorder border border-surfaceBorder shadow-sm',
-    outline: 'border border-surfaceBorder bg-surface/80 text-foreground hover:bg-surfaceCard hover:border-surfaceBorder focus-visible:ring-surfaceBorder shadow-sm',
-    ghost: 'text-secondary hover:text-foreground hover:bg-surface focus-visible:ring-surfaceBorder border border-transparent',
+    primary: 'bg-signature hover:bg-burnt text-white focus-visible:ring-signature shadow-sm hover:shadow-soft hover:shadow-signature/20 border border-transparent',
+    secondary: 'bg-carbon hover:bg-graphite text-white focus-visible:ring-carbon shadow-sm border border-graphite/40',
+    outline: 'border border-borderStrong bg-white text-carbon hover:bg-neutralLight hover:border-carbon/30 focus-visible:ring-carbon shadow-subtle',
+    ghost: 'text-textSecondary hover:text-carbon hover:bg-neutralLight/80 focus-visible:ring-carbon border border-transparent',
     danger: 'bg-semanticError hover:bg-red-700 text-white focus-visible:ring-semanticError shadow-sm border border-transparent',
-    subtle: 'bg-brandOrangeLight text-brandOrange border border-brandOrangeBorder hover:bg-orange-950/40 focus-visible:ring-brandOrange font-semibold',
+    subtle: 'bg-peach hover:bg-orange-100 text-burnt border border-orange-200/80 focus-visible:ring-signature font-semibold',
     emerald: 'bg-emerald-600 hover:bg-emerald-700 text-white focus-visible:ring-emerald-600 shadow-sm border border-transparent'
   };
 

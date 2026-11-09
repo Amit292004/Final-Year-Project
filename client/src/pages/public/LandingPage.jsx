@@ -1,37 +1,35 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  FileCheck,
+  FileText,
   Briefcase,
   Target,
   Map,
   MessagesSquare,
+  ShieldCheck,
+  CheckCircle2,
   ArrowRight,
   ChevronDown,
   Sparkles,
   BarChart2,
+  Layers,
   Cpu,
   Zap,
   Code2,
+  Flame,
   Check,
   X,
   Volume2,
-  Layers,
-  Terminal,
-  ExternalLink,
-  ShieldCheck,
-  CheckCircle2,
-  Radio,
-  FileText
+  BookOpen,
+  Award
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { Badge } from '../../components/ui/Badge';
 import { ScoreGauge } from '../../components/ui/ScoreGauge';
-import { AnimatedNumber } from '../../components/ui/AnimatedNumber';
 
 export function LandingPage() {
-  const [heroTab, setHeroTab] = useState('scorecard');
+  const [heroTab, setHeroTab] = useState('scorecard'); // scorecard, matching, rewrite, interview
   const [openFaq, setOpenFaq] = useState(null);
 
   // Interactive Sandbox state
@@ -91,57 +89,6 @@ export function LandingPage() {
     setOpenFaq(openFaq === index ? null : index);
   };
 
-  const tools = [
-    {
-      id: "01",
-      title: "Deterministic ATS Scorer",
-      description: "Audits your resume against a transparent 100-point rubric across 5 dimensions: Formatting (20 pts), Keywords (25 pts), X-Y-Z Impact (20 pts), Skill Depth (20 pts), and ATS Hygiene (15 pts).",
-      icon: FileCheck,
-      tag: "Rubric Engine",
-      link: "/ats-scorer"
-    },
-    {
-      id: "02",
-      title: "pgvector Semantic Matcher",
-      description: "Generates 384-dimensional dense sentence embeddings to calculate true cosine similarity between your profile and job specs, discovering transferable engineering skills.",
-      icon: Briefcase,
-      tag: "Vector Search",
-      link: "/job-matching"
-    },
-    {
-      id: "03",
-      title: "Google X-Y-Z Rewriter",
-      description: "Transforms vague task bullets into high-impact engineering achievements using Google's formula: Accomplished [X] measured by [Y] by doing [Z].",
-      icon: Code2,
-      tag: "Syntax Optimizer",
-      link: "/resume-rewriter"
-    },
-    {
-      id: "04",
-      title: "Voice RAG STAR Interviewer",
-      description: "Speech-to-text behavioral and technical mock interviews powered by RAG context. Scored strictly on Situation, Task, Action, and Result criteria.",
-      icon: MessagesSquare,
-      tag: "Voice Coaching",
-      link: "/mock-interview"
-    },
-    {
-      id: "05",
-      title: "Explainable Skill Gap Matrix",
-      description: "Separates explicit resume omissions from implicit domain prerequisites with prioritized remediation tasks and verified documentation links.",
-      icon: Target,
-      tag: "Gap Analysis",
-      link: "/skill-gap"
-    },
-    {
-      id: "06",
-      title: "Application Pipeline & Velocity",
-      description: "7-stage Kanban workflow paired with historical ATS score telemetry. Track every opportunity from Wishlist to Offer with salary notes and deadlines.",
-      icon: BarChart2,
-      tag: "Pipeline Kanban",
-      link: "/applications"
-    }
-  ];
-
   const faqs = [
     {
       q: "How does the ATS readiness score calculate points objectively?",
@@ -170,173 +117,113 @@ export function LandingPage() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-obsidian text-foreground overflow-x-clip selection:bg-brandOrange/30 selection:text-white">
-      {/* Volumetric background beam & grain textures */}
-      <div className="noise" />
-      <div className="beam" />
-
-      {/* Top Live Announcement Banner */}
-      <div className="relative z-10 border-b border-surfaceBorder bg-surface/80 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between gap-4 text-xs">
-          <div className="flex items-center gap-2 text-secondary">
-            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-brandOrange/10 border border-brandOrangeBorder text-brandOrange font-mono text-[10px] font-semibold uppercase tracking-wider">
-              <Radio className="w-3 h-3 text-brandOrange animate-pulse" /> Live Telemetry
-            </span>
-            <span className="hidden sm:inline text-secondary">CareerFit Engine v2.4 initialized with deterministic 100-point rubric</span>
-          </div>
-          <Link
-            to="/signup"
-            className="inline-flex items-center gap-1 text-brandOrange font-semibold hover:text-brandOrangeHover transition-colors shrink-0"
-          >
-            <span>Claim Free Seat</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-      </div>
-
+    <div className="space-y-24 py-8">
       {/* Hero Section */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-20 lg:pb-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Column: Headlines & Actions */}
-          <div className="lg:col-span-7 space-y-7">
-            {/* Live Active Candidates Chip */}
-            <div className="liveChip">
-              <span className="liveDot" />
-              <span>2,840+ engineers preparing right now</span>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          {/* Left Column: Headline and CTAs */}
+          <div className="lg:col-span-7 space-y-6">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-peach border border-orange-200 text-burnt text-xs font-semibold">
+              <Sparkles className="w-4 h-4 text-signature" />
+              <span>Deterministic AI • 100-Point Explainable Rubric • Zero Paywalls</span>
             </div>
 
-            {/* Kinetic Title */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.08]">
-              The smartest way to prepare for <br className="hidden sm:inline" />
-              <span className="kinetic-text">technical hiring & ATS screening.</span>
+            <h1 className="font-headline font-extrabold text-4xl sm:text-5xl lg:text-6xl text-carbon tracking-tight leading-[1.1]">
+              Target Your Dream Role <br className="hidden sm:inline" />
+              <span className="text-signature underline decoration-peach decoration-wavy underline-offset-8">
+                With Scientific Clarity.
+              </span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg text-secondary max-w-xl leading-relaxed">
-              A transparent career intelligence platform for engineers. Audit your resume against an explainable 100-point rubric, discover semantic job fit with pgvector embeddings, and rehearse technical screens with STAR-evaluated mock interviews.
+            <p className="text-base sm:text-lg text-textSecondary max-w-xl leading-relaxed">
+              Eliminate guesswork from your tech career search. Evaluate your resume against a deterministic 100-point ATS rubric, match job requirements with dense 384-d semantic embeddings, bridge critical skill gaps with personalized milestone roadmaps, and practice voice-enabled RAG mock interviews.
             </p>
 
-            {/* 3 CTAs */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
               <Link to="/signup">
-                <Button variant="primary" size="lg" className="w-full sm:w-auto haptic-btn">
+                <Button variant="primary" size="lg" className="w-full sm:w-auto">
                   <span>Launch Free Workspace</span>
                   <ArrowRight className="w-4 h-4 ml-1.5" />
                 </Button>
               </Link>
-              <Link to="/ats-scorer">
-                <Button variant="secondary" size="lg" className="w-full sm:w-auto haptic-btn">
-                  Explore ATS Scorer
+              <a href="#sandbox">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  Try Interactive Sandbox
                 </Button>
-              </Link>
-              <a
-                href="#sandbox"
-                className="inline-flex items-center justify-center px-4 py-3 rounded-btn text-xs font-mono font-medium text-secondary hover:text-foreground hover:bg-surfaceCard transition-colors"
-              >
-                <span>Try Sandbox //</span>
               </a>
             </div>
 
-            {/* 4 Numerical Metric Cards */}
-            <div className="pt-6 border-t border-surfaceBorder grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="bg-surface/60 border border-surfaceBorder rounded-card p-3.5 space-y-1">
-                <div className="font-headline font-black text-2xl text-brandOrange">
-                  <AnimatedNumber value={100} duration={1200} suffix=" / 100" />
-                </div>
-                <div className="text-[11px] font-mono text-secondary uppercase tracking-wider font-semibold">
-                  ATS Rubric
-                </div>
-                <p className="text-[10px] text-muted leading-tight">Deterministic 5 categories</p>
+            {/* Technical Verification Highlights */}
+            <div className="pt-4 grid grid-cols-2 sm:grid-cols-3 gap-4 border-t border-borderStandard text-xs text-textSecondary">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-semanticSuccess shrink-0" />
+                <span className="font-medium">100-Point Explainable Rubric</span>
               </div>
-
-              <div className="bg-surface/60 border border-surfaceBorder rounded-card p-3.5 space-y-1">
-                <div className="font-headline font-black text-2xl text-white">
-                  <AnimatedNumber value={384} duration={1200} suffix="-Dim" />
-                </div>
-                <div className="text-[11px] font-mono text-secondary uppercase tracking-wider font-semibold">
-                  Embeddings
-                </div>
-                <p className="text-[10px] text-muted leading-tight">pgvector cosine match</p>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-semanticSuccess shrink-0" />
+                <span className="font-medium">Dense pgvector Embeddings</span>
               </div>
-
-              <div className="bg-surface/60 border border-surfaceBorder rounded-card p-3.5 space-y-1">
-                <div className="font-headline font-black text-2xl text-brandOrange">
-                  <AnimatedNumber value={94} duration={1200} suffix="%" />
-                </div>
-                <div className="text-[11px] font-mono text-secondary uppercase tracking-wider font-semibold">
-                  STAR Pass Rate
-                </div>
-                <p className="text-[10px] text-muted leading-tight">Voice RAG simulation</p>
-              </div>
-
-              <div className="bg-surface/60 border border-surfaceBorder rounded-card p-3.5 space-y-1">
-                <div className="font-headline font-black text-2xl text-white">
-                  100% Free
-                </div>
-                <div className="text-[11px] font-mono text-secondary uppercase tracking-wider font-semibold">
-                  Open Tier
-                </div>
-                <p className="text-[10px] text-muted leading-tight">Zero paywalls or fees</p>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-semanticSuccess shrink-0" />
+                <span className="font-medium">Google X-Y-Z Achievement Syntax</span>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Interactive Multi-Tab Product Preview (Glass Panel) */}
+          {/* Right Column: Interactive Multi-Tab Product Preview */}
           <div className="lg:col-span-5">
-            <div className="glass-panel border-surfaceBorder rounded-card overflow-hidden shadow-2xl tactile-card">
-              {/* Terminal Window Header */}
-              <div className="px-4 py-3 bg-surface border-b border-surfaceBorder flex items-center justify-between">
+            <Card padded={false} className="border-borderStrong shadow-2xl bg-white overflow-hidden">
+              {/* Card Window Header */}
+              <div className="px-4 py-3 bg-carbon text-white flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-                  <span className="text-xs font-mono font-medium text-secondary ml-2">
-                    careerfit-engine // live-rubric
-                  </span>
+                  <div className="w-3 h-3 rounded-full bg-red-500" />
+                  <div className="w-3 h-3 rounded-full bg-amber-500" />
+                  <div className="w-3 h-3 rounded-full bg-emerald-500" />
+                  <span className="text-xs font-mono font-medium text-gray-300 ml-2">careerfit-engine // live-preview</span>
                 </div>
-                <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-brandOrange/15 text-brandOrange border border-brandOrangeBorder">
-                  ONLINE
+                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-white/10 text-emerald-400">
+                  Ready
                 </span>
               </div>
 
               {/* Interactive Tabs */}
-              <div className="flex border-b border-surfaceBorder bg-surface/50 text-xs font-medium">
+              <div className="flex border-b border-borderStandard bg-neutralLight/40 text-xs font-medium">
                 <button
                   onClick={() => setHeroTab('scorecard')}
-                  className={`flex-1 py-2.5 px-3 text-center transition-all ${
+                  className={`flex-1 py-2.5 px-3 text-center transition ${
                     heroTab === 'scorecard'
-                      ? 'bg-surfaceCard text-brandOrange font-bold border-b-2 border-brandOrange'
-                      : 'text-secondary hover:text-white'
+                      ? 'bg-white text-signature font-bold border-b-2 border-signature'
+                      : 'text-textSecondary hover:text-carbon'
                   }`}
                 >
                   ATS Score
                 </button>
                 <button
                   onClick={() => setHeroTab('matching')}
-                  className={`flex-1 py-2.5 px-3 text-center transition-all ${
+                  className={`flex-1 py-2.5 px-3 text-center transition ${
                     heroTab === 'matching'
-                      ? 'bg-surfaceCard text-brandOrange font-bold border-b-2 border-brandOrange'
-                      : 'text-secondary hover:text-white'
+                      ? 'bg-white text-signature font-bold border-b-2 border-signature'
+                      : 'text-textSecondary hover:text-carbon'
                   }`}
                 >
                   Vector Match
                 </button>
                 <button
                   onClick={() => setHeroTab('rewrite')}
-                  className={`flex-1 py-2.5 px-3 text-center transition-all ${
+                  className={`flex-1 py-2.5 px-3 text-center transition ${
                     heroTab === 'rewrite'
-                      ? 'bg-surfaceCard text-brandOrange font-bold border-b-2 border-brandOrange'
-                      : 'text-secondary hover:text-white'
+                      ? 'bg-white text-signature font-bold border-b-2 border-signature'
+                      : 'text-textSecondary hover:text-carbon'
                   }`}
                 >
                   X-Y-Z Rewrite
                 </button>
                 <button
                   onClick={() => setHeroTab('interview')}
-                  className={`flex-1 py-2.5 px-3 text-center transition-all ${
+                  className={`flex-1 py-2.5 px-3 text-center transition ${
                     heroTab === 'interview'
-                      ? 'bg-surfaceCard text-brandOrange font-bold border-b-2 border-brandOrange'
-                      : 'text-secondary hover:text-white'
+                      ? 'bg-white text-signature font-bold border-b-2 border-signature'
+                      : 'text-textSecondary hover:text-carbon'
                   }`}
                 >
                   STAR Coach
@@ -345,301 +232,245 @@ export function LandingPage() {
 
               {/* Tab 1: ATS Scorecard Preview */}
               {heroTab === 'scorecard' && (
-                <div className="p-6 space-y-5 animate-in fade-in duration-150 bg-surfaceCard/90">
+                <div className="p-6 space-y-5 animate-in fade-in duration-150">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] text-secondary uppercase font-mono tracking-wider">
-                        Candidate Benchmark
-                      </span>
-                      <h4 className="font-headline font-bold text-sm text-foreground">
-                        Software Engineer Profile
-                      </h4>
+                      <span className="text-xs text-textMuted uppercase font-bold tracking-wider">Candidate Scorecard</span>
+                      <h4 className="font-headline font-bold text-sm text-carbon">Software Engineer Benchmark</h4>
                     </div>
-                    <Badge variant="emerald">Strong Readiness</Badge>
+                    <Badge variant="success">Strong Readiness</Badge>
                   </div>
 
                   <div className="flex justify-center py-1">
-                    <ScoreGauge score={86} maxScore={100} size={135} sublabel="86 / 100 Deterministic Points" />
+                    <ScoreGauge score={86} maxScore={100} size={135} sublabel="86 / 100 Deterministic ATS Points" />
                   </div>
 
                   <div className="space-y-2.5 text-xs">
                     <div>
                       <div className="flex justify-between font-medium mb-1">
-                        <span className="text-secondary">Formatting & Structure</span>
-                        <span className="font-bold text-white font-mono">19 / 20</span>
+                        <span className="text-textSecondary">Formatting & Structure</span>
+                        <span className="font-bold text-carbon">19 / 20</span>
                       </div>
-                      <div className="w-full bg-surface h-1.5 rounded-full overflow-hidden border border-surfaceBorder">
-                        <div className="bg-emerald-500 h-full w-[95%]" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between font-medium mb-1">
-                        <span className="text-secondary">Keyword Relevance (pgvector)</span>
-                        <span className="font-bold text-white font-mono">22 / 25</span>
-                      </div>
-                      <div className="w-full bg-surface h-1.5 rounded-full overflow-hidden border border-surfaceBorder">
-                        <div className="bg-brandOrange h-full w-[88%]" />
+                      <div className="w-full bg-neutralLight h-2 rounded-full overflow-hidden">
+                        <div className="bg-emerald-600 h-full w-[95%]" />
                       </div>
                     </div>
 
                     <div>
                       <div className="flex justify-between font-medium mb-1">
-                        <span className="text-secondary">Google X-Y-Z Impact Density</span>
-                        <span className="font-bold text-white font-mono">18 / 20</span>
+                        <span className="text-textSecondary">Keyword Relevance (pgvector)</span>
+                        <span className="font-bold text-carbon">22 / 25</span>
                       </div>
-                      <div className="w-full bg-surface h-1.5 rounded-full overflow-hidden border border-surfaceBorder">
-                        <div className="bg-brandOrange h-full w-[90%]" />
+                      <div className="w-full bg-neutralLight h-2 rounded-full overflow-hidden">
+                        <div className="bg-signature h-full w-[88%]" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between font-medium mb-1">
+                        <span className="text-textSecondary">Google X-Y-Z Impact Density</span>
+                        <span className="font-bold text-carbon">18 / 20</span>
+                      </div>
+                      <div className="w-full bg-neutralLight h-2 rounded-full overflow-hidden">
+                        <div className="bg-signature h-full w-[90%]" />
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-card bg-surface border border-surfaceBorder text-[11px] text-secondary">
-                    <strong className="text-foreground">ATS Diagnosis:</strong> Section headings parsed flawlessly. 3 project bullets strengthened with quantified metrics.
+                  <div className="p-3 rounded-standard bg-peach/40 border border-orange-200 text-[11px] text-burnt">
+                    <strong>ATS Diagnosis:</strong> Section headings parsed flawlessly. 3 project bullets strengthened with quantified metrics.
                   </div>
                 </div>
               )}
 
               {/* Tab 2: Semantic Matching Preview */}
               {heroTab === 'matching' && (
-                <div className="p-6 space-y-4 animate-in fade-in duration-150 bg-surfaceCard/90">
-                  <div className="flex items-center justify-between pb-2 border-b border-surfaceBorder">
+                <div className="p-6 space-y-4 animate-in fade-in duration-150">
+                  <div className="flex items-center justify-between pb-2 border-b border-borderStandard">
                     <div>
-                      <span className="text-[10px] text-secondary font-mono uppercase tracking-wider">
-                        Target Job Spec
-                      </span>
-                      <p className="font-headline font-bold text-sm text-foreground">
-                        Senior Full Stack Engineer
-                      </p>
+                      <span className="text-[10px] text-textMuted font-bold uppercase tracking-wider">Target Job Analysis</span>
+                      <p className="font-headline font-bold text-sm text-carbon">Senior Full Stack Engineer • Stripe</p>
                     </div>
                     <div className="text-right">
-                      <span className="font-headline font-extrabold text-2xl text-brandOrange">89%</span>
-                      <span className="block text-[10px] text-secondary font-mono">Vector Cosine</span>
+                      <span className="font-headline font-extrabold text-2xl text-signature">89%</span>
+                      <span className="block text-[10px] text-textMuted font-semibold">Semantic Match</span>
                     </div>
                   </div>
 
                   <div className="space-y-3 text-xs">
                     <div>
-                      <span className="font-medium text-secondary block mb-1">
-                        Cosine Embedding Distance: 0.12 (High Overlap)
-                      </span>
-                      <div className="w-full bg-surface h-1.5 rounded-full overflow-hidden border border-surfaceBorder">
-                        <div className="bg-emerald-500 h-full w-[89%]" />
+                      <span className="font-bold text-carbon block mb-1">Cosine Embedding Distance: 0.12 (High Overlap)</span>
+                      <div className="w-full bg-neutralLight h-2 rounded-full overflow-hidden">
+                        <div className="bg-emerald-600 h-full w-[89%]" />
                       </div>
                     </div>
 
                     <div>
-                      <span className="font-semibold text-foreground block mb-1.5">Direct Verified Competencies:</span>
+                      <span className="font-bold text-carbon block mb-1.5">Direct Verified Competencies:</span>
                       <div className="flex flex-wrap gap-1.5">
                         {['Python', 'React 18', 'PostgreSQL', 'Docker', 'REST APIs', 'TypeScript'].map(s => (
-                          <span
-                            key={s}
-                            className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono text-[10px] flex items-center gap-1"
-                          >
-                            <Check className="w-3 h-3 text-emerald-400" /> {s}
+                          <span key={s} className="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium text-[10px] flex items-center gap-1">
+                            <Check className="w-3 h-3 text-emerald-600" /> {s}
                           </span>
                         ))}
                       </div>
                     </div>
 
                     <div>
-                      <span className="font-semibold text-foreground block mb-1.5">Surfaced Growth Gaps:</span>
+                      <span className="font-bold text-carbon block mb-1.5">Surfaced Growth Gaps:</span>
                       <div className="flex flex-wrap gap-1.5">
                         {['Apache Kafka', 'Distributed Tracing'].map(s => (
-                          <span
-                            key={s}
-                            className="px-2 py-0.5 rounded bg-red-500/10 text-red-400 border border-red-500/20 font-mono text-[10px] flex items-center gap-1"
-                          >
-                            <X className="w-3 h-3 text-red-400" /> {s}
+                          <span key={s} className="px-2 py-0.5 rounded bg-red-50 text-red-700 border border-red-200 font-medium text-[10px] flex items-center gap-1">
+                            <X className="w-3 h-3 text-red-500" /> {s}
                           </span>
                         ))}
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-3 bg-surface rounded-card border border-surfaceBorder text-[11px] text-secondary">
-                    <strong className="text-foreground">pgvector Insight:</strong> Dense sentence embeddings detected transferable message queue knowledge from Celery background tasks.
+                  <div className="p-3 bg-neutralLight/40 rounded-standard border border-borderStandard text-[11px] text-textSecondary">
+                    <strong>Embeddings Insight:</strong> Dense sentence embeddings detected transferable message queue knowledge from Celery experience.
                   </div>
                 </div>
               )}
 
               {/* Tab 3: X-Y-Z Rewrite Preview */}
               {heroTab === 'rewrite' && (
-                <div className="p-6 space-y-4 animate-in fade-in duration-150 bg-surfaceCard/90">
-                  <div className="flex items-center justify-between pb-2 border-b border-surfaceBorder">
-                    <span className="text-xs font-bold text-foreground">Google X-Y-Z Bullet Optimizer</span>
+                <div className="p-6 space-y-4 animate-in fade-in duration-150">
+                  <div className="flex items-center justify-between pb-2 border-b border-borderStandard">
+                    <span className="text-xs font-bold text-carbon">Google X-Y-Z Bullet Optimizer</span>
                     <Badge variant="orange">+18 ATS Impact</Badge>
                   </div>
 
                   <div className="space-y-3 text-xs">
-                    <div className="p-3 rounded-card bg-red-950/20 border border-red-500/30 space-y-1">
-                      <span className="text-[10px] font-mono font-bold text-red-400 uppercase tracking-wider flex items-center gap-1">
+                    <div className="p-3 rounded-standard bg-red-50/60 border border-red-200 space-y-1">
+                      <span className="text-[10px] font-bold text-red-700 uppercase tracking-wider flex items-center gap-1">
                         <X className="w-3 h-3" /> Original Candidate Draft
                       </span>
-                      <p className="text-secondary italic">
+                      <p className="text-textSecondary italic">
                         "Responsible for maintaining backend systems and writing code to speed up our queries."
                       </p>
                     </div>
 
-                    <div className="p-3 rounded-card bg-emerald-950/20 border border-emerald-500/30 space-y-1">
-                      <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1">
-                        <Check className="w-3 h-3 text-emerald-400" /> Verified Google X-Y-Z Structure
+                    <div className="p-3 rounded-standard bg-emerald-50/70 border border-emerald-300 space-y-1">
+                      <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1">
+                        <Check className="w-3 h-3 text-emerald-600" /> Verified Google X-Y-Z Structure
                       </span>
-                      <p className="text-foreground font-medium">
+                      <p className="text-carbon font-medium">
                         "Optimized distributed PostgreSQL schemas with indexed query caching, decreasing p95 latency by 42% across 1.8M daily user requests."
                       </p>
                     </div>
                   </div>
 
-                  <div className="p-2.5 rounded bg-surface border border-surfaceBorder text-[10px] text-secondary">
-                    <strong className="text-brandOrange">Formula Breakdown:</strong> Accomplished [42% latency cut] measured by [1.8M requests] by doing [PostgreSQL indexing & caching].
+                  <div className="p-2.5 rounded bg-peach/40 border border-orange-200 text-[10px] text-burnt">
+                    <strong>Formula Breakdown:</strong> Accomplished [42% latency cut] measured by [1.8M requests] by doing [PostgreSQL indexing & caching].
                   </div>
                 </div>
               )}
 
               {/* Tab 4: STAR Interview Coach Preview */}
               {heroTab === 'interview' && (
-                <div className="p-6 space-y-4 animate-in fade-in duration-150 bg-surfaceCard/90">
-                  <div className="flex items-center justify-between pb-2 border-b border-surfaceBorder">
+                <div className="p-6 space-y-4 animate-in fade-in duration-150">
+                  <div className="flex items-center justify-between pb-2 border-b border-borderStandard">
                     <div className="flex items-center gap-2">
-                      <Volume2 className="w-4 h-4 text-brandOrange" />
-                      <span className="text-xs font-bold text-foreground">RAG Interview Simulation</span>
+                      <Volume2 className="w-4 h-4 text-signature" />
+                      <span className="text-xs font-bold text-carbon">RAG Interview Simulation</span>
                     </div>
-                    <Badge variant="emerald">STAR Score: 9.1 / 10</Badge>
+                    <Badge variant="success">STAR Rating: 9.1 / 10</Badge>
                   </div>
 
-                  <div className="p-3 rounded-card bg-surface border border-surfaceBorder text-xs space-y-1">
-                    <span className="text-[10px] font-mono font-bold text-secondary uppercase tracking-wider">
-                      Technical Behavioral Prompt
-                    </span>
-                    <p className="text-foreground font-semibold">
+                  <div className="p-3 rounded-standard bg-neutralLight/40 border border-borderStandard text-xs space-y-1">
+                    <span className="text-[10px] font-bold text-textMuted uppercase tracking-wider">Technical Behavioral Prompt</span>
+                    <p className="text-carbon font-semibold">
                       "Describe how you handled an unexpected production outage or database lock bottleneck."
                     </p>
                   </div>
 
                   <div className="grid grid-cols-4 gap-2 text-center text-xs">
-                    <div className="p-2 rounded bg-surface border border-surfaceBorder">
-                      <span className="text-[10px] text-secondary font-mono block">Situation</span>
-                      <span className="font-extrabold text-foreground">9 / 10</span>
+                    <div className="p-2 rounded bg-neutralLight/50 border border-borderStandard">
+                      <span className="text-[10px] text-textMuted font-bold block">Situation</span>
+                      <span className="font-extrabold text-carbon">9 / 10</span>
                     </div>
-                    <div className="p-2 rounded bg-surface border border-surfaceBorder">
-                      <span className="text-[10px] text-secondary font-mono block">Task</span>
-                      <span className="font-extrabold text-foreground">8 / 10</span>
+                    <div className="p-2 rounded bg-neutralLight/50 border border-borderStandard">
+                      <span className="text-[10px] text-textMuted font-bold block">Task</span>
+                      <span className="font-extrabold text-carbon">8 / 10</span>
                     </div>
-                    <div className="p-2 rounded bg-surface border border-surfaceBorder">
-                      <span className="text-[10px] text-secondary font-mono block">Action</span>
-                      <span className="font-extrabold text-emerald-400">10 / 10</span>
+                    <div className="p-2 rounded bg-neutralLight/50 border border-borderStandard">
+                      <span className="text-[10px] text-textMuted font-bold block">Action</span>
+                      <span className="font-extrabold text-emerald-700">10 / 10</span>
                     </div>
-                    <div className="p-2 rounded bg-surface border border-surfaceBorder">
-                      <span className="text-[10px] text-secondary font-mono block">Result</span>
-                      <span className="font-extrabold text-foreground">9 / 10</span>
+                    <div className="p-2 rounded bg-neutralLight/50 border border-borderStandard">
+                      <span className="text-[10px] text-textMuted font-bold block">Result</span>
+                      <span className="font-extrabold text-carbon">9 / 10</span>
                     </div>
                   </div>
 
-                  <p className="text-[11px] text-secondary italic">
+                  <p className="text-[11px] text-textSecondary italic">
                     "AI Coach: Excellent technical precision explaining connection pooling failover. Consider tightening the initial situation context by 15 seconds."
                   </p>
                 </div>
               )}
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Real-World Metrics Bar */}
+      <section className="bg-carbon text-white py-10 border-y border-graphite">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div className="space-y-1">
+              <div className="font-headline font-extrabold text-3xl sm:text-4xl text-signature">100 / 100</div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-textDisabled">Deterministic Scoring Model</div>
+              <p className="text-[11px] text-gray-400">Zero opaque percentages</p>
+            </div>
+            <div className="space-y-1">
+              <div className="font-headline font-extrabold text-3xl sm:text-4xl text-white">384-Dim</div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-textDisabled">pgvector Dense Embeddings</div>
+              <p className="text-[11px] text-gray-400">Sentence transformer cosine matching</p>
+            </div>
+            <div className="space-y-1">
+              <div className="font-headline font-extrabold text-3xl sm:text-4xl text-signature">STAR</div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-textDisabled">Interview Evaluation Rubric</div>
+              <p className="text-[11px] text-gray-400">Situation, Task, Action, Result</p>
+            </div>
+            <div className="space-y-1">
+              <div className="font-headline font-extrabold text-3xl sm:text-4xl text-white">100% Free</div>
+              <div className="text-xs font-semibold uppercase tracking-wider text-textDisabled">Open Academic Platform</div>
+              <p className="text-[11px] text-gray-400">Complete unrestricted intelligence</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Section 01: Platform Utilities (Hairline Grid) */}
-      <section id="features" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-20">
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-          <div className="eyebrow inline-flex">
-            <span className="eyebrowNum">01</span> // PLATFORM UTILITIES
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Your Career Intelligence Toolkit
+      {/* Live Interactive Bullet Point Optimizer Sandbox */}
+      <section id="sandbox" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
+        <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
+          <Badge variant="orange">Interactive Sandbox</Badge>
+          <h2 className="font-headline font-extrabold text-3xl sm:text-4xl text-carbon">
+            Test The Google X-Y-Z Optimizer
           </h2>
-          <p className="text-sm sm:text-base text-secondary leading-relaxed">
-            Six explainable engineering modules built for transparent career readiness. Every tool adheres to open, deterministic evaluation standards.
+          <p className="text-sm text-textSecondary leading-relaxed">
+            Experience how our deterministic rewrites transform vague duties into high-impact, quantifiable achievements preferred by top technical recruiters.
           </p>
         </div>
 
-        {/* 1px Hairline Grid Container */}
-        <div className="hairline-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {tools.map((tool) => {
-            const Icon = tool.icon;
-            return (
-              <Link
-                key={tool.id}
-                to={tool.link}
-                className="hairline-card p-6 sm:p-7 flex flex-col justify-between group"
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="iconBox group-hover:border-brandOrange group-hover:text-brandOrange transition-colors">
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <span className="font-mono text-xs font-bold text-muted group-hover:text-brandOrange transition-colors">
-                      {tool.id}
-                    </span>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-foreground group-hover:text-brandOrange transition-colors flex items-center gap-2">
-                      <span>{tool.title}</span>
-                    </h3>
-                    <p className="text-xs sm:text-sm text-secondary mt-2 leading-relaxed">
-                      {tool.description}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="pt-6 mt-4 border-t border-surfaceBorder flex items-center justify-between">
-                  <span className="text-[11px] font-mono text-muted uppercase tracking-wider">
-                    {tool.tag}
-                  </span>
-                  <div className="inline-flex items-center gap-1 text-xs font-semibold text-brandOrange group-hover:translate-x-1 transition-transform">
-                    <span>Launch</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Section 02: Interactive Engine (Sandbox) */}
-      <section id="sandbox" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-20">
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <div className="eyebrow inline-flex">
-            <span className="eyebrowNum">02</span> // INTERACTIVE ENGINE
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            The Google X-Y-Z Achievement Optimizer
-          </h2>
-          <p className="text-sm text-secondary leading-relaxed">
-            See how deterministic rewrites turn vague task descriptions into measurable engineering achievements.
-          </p>
-        </div>
-
-        <div className="max-w-4xl mx-auto bg-surfaceCard border border-surfaceBorder rounded-card p-6 sm:p-8 space-y-6 shadow-2xl tactile-card">
-          {/* Sample Benchmark Selectors */}
+        <Card className="max-w-4xl mx-auto border-borderStrong shadow-lg bg-white space-y-6">
+          {/* Sample Selectors */}
           <div className="space-y-2">
-            <span className="text-xs font-mono text-secondary uppercase tracking-wider block font-semibold">
-              Select a technical role benchmark:
-            </span>
+            <span className="text-xs font-bold text-carbon">Select a realistic sample bullet to test:</span>
             <div className="flex flex-wrap gap-2">
               {sampleBullets.map((sample, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSelectSample(idx)}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-btn text-xs font-medium transition-all ${
+                  className={`px-3 py-1.5 rounded-btn text-xs font-medium transition ${
                     selectedSampleIndex === idx && !customBullet
-                      ? 'bg-brandOrange text-white shadow-md'
-                      : 'bg-surface text-secondary hover:text-white hover:bg-surface/80 border border-surfaceBorder'
+                      ? 'bg-carbon text-white shadow-sm'
+                      : 'bg-neutralLight text-textSecondary hover:bg-neutralLight/80'
                   }`}
                 >
-                  {idx === 0 && <Code2 className="w-3.5 h-3.5" />}
-                  {idx === 1 && <Layers className="w-3.5 h-3.5" />}
-                  {idx === 2 && <Cpu className="w-3.5 h-3.5" />}
-                  <span>{sample.role}</span>
+                  {sample.role}
                 </button>
               ))}
             </div>
@@ -651,321 +482,373 @@ export function LandingPage() {
               <textarea
                 value={customBullet}
                 onChange={(e) => setCustomBullet(e.target.value)}
-                placeholder="Or paste your own resume bullet to test (e.g. 'Helped write backend API endpoints for our app')..."
-                className="w-full text-xs p-3.5 rounded-btn bg-surface border border-surfaceBorder text-foreground focus:border-brandOrange focus:ring-1 focus:ring-brandOrange focus:outline-none min-h-[85px] font-sans placeholder:text-muted"
+                placeholder="Or paste your own resume bullet to optimize (e.g. 'Helped develop payment features on our web app')..."
+                className="w-full text-xs p-3 rounded-btn border border-borderStandard focus:border-signature focus:ring-1 focus:ring-signature focus:outline-none min-h-[75px]"
               />
             </div>
             {customBullet && (
-              <Button type="submit" variant="primary" size="sm" loading={isOptimizing} className="haptic-btn">
-                Rewrite With Google X-Y-Z Formula
+              <Button type="submit" variant="primary" size="sm" loading={isOptimizing}>
+                Optimize My Bullet
               </Button>
             )}
           </form>
 
           {/* Comparison Output */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-surfaceBorder">
-            <div className="p-4 rounded-card bg-red-950/20 border border-red-500/30 space-y-2.5">
-              <span className="text-[10px] font-mono text-red-400 flex items-center gap-1.5 font-bold uppercase tracking-wider">
-                <X className="w-3.5 h-3.5" /> Weak Draft
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-borderStandard">
+            <div className="p-4 rounded-standard bg-red-50/50 border border-red-200 space-y-2">
+              <span className="text-[10px] font-bold text-red-700 uppercase tracking-wider flex items-center gap-1">
+                <X className="w-3.5 h-3.5" /> Weak / Unquantified Draft
               </span>
-              <p className="text-xs text-secondary leading-relaxed italic">
+              <p className="text-xs text-textSecondary leading-relaxed italic">
                 "{sandboxResult.original}"
               </p>
-              <div className="text-[11px] text-red-400/90 font-medium pt-1 border-t border-red-500/20">
-                Lacks quantified business metrics, specific tools, and operational velocity.
-              </div>
+              <span className="inline-block text-[10px] text-red-600 font-medium">
+                Issue: Lacks measurable scope, specific technologies, and quantifiable business outcomes.
+              </span>
             </div>
 
-            <div className="p-4 rounded-card bg-emerald-950/20 border border-emerald-500/30 space-y-2.5">
+            <div className="p-4 rounded-standard bg-emerald-50/60 border border-emerald-300 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1.5 font-bold uppercase tracking-wider">
-                  <Check className="w-3.5 h-3.5 text-emerald-400" /> Google X-Y-Z Standard
+                <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider flex items-center gap-1">
+                  <Check className="w-3.5 h-3.5 text-emerald-600" /> Google X-Y-Z Transformation
                 </span>
-                <Badge variant="emerald" size="xs">{sandboxResult.impact}</Badge>
+                <Badge variant="success" size="sm">{sandboxResult.impact}</Badge>
               </div>
-              <p className="text-xs text-foreground font-semibold leading-relaxed">
+              <p className="text-xs text-carbon font-medium leading-relaxed">
                 "{sandboxResult.optimized}"
               </p>
-              <div className="text-[11px] text-emerald-400 font-medium pt-1 border-t border-emerald-500/20">
-                Formula Breakdown: <span className="font-bold">{sandboxResult.metric}</span>
+              <div className="text-[10px] text-emerald-700 font-semibold pt-1 border-t border-emerald-200">
+                Formula Evidence: {sandboxResult.metric}
               </div>
+            </div>
+          </div>
+        </Card>
+      </section>
+
+      {/* Primary Features Section */}
+      <section id="features" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+          <Badge variant="orange">Full Platform Architecture</Badge>
+          <h2 className="font-headline font-extrabold text-3xl sm:text-4xl text-carbon">
+            7 Integrated Career Intelligence Modules
+          </h2>
+          <p className="text-sm text-textSecondary leading-relaxed">
+            Every module operates on a single unified candidate knowledge base, from PDF parsing to technical interview practice.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <Card className="space-y-4 hover:shadow-md transition">
+            <div className="w-10 h-10 rounded-btn bg-peach text-burnt flex items-center justify-center">
+              <FileText className="w-5 h-5" />
+            </div>
+            <h3 className="font-headline font-bold text-lg text-carbon">Deterministic ATS Readiness</h3>
+            <p className="text-xs text-textSecondary leading-relaxed">
+              Objective 100-point scoring model assessing section completeness, typography consistency, action verb density, and ATS layout parseability.
+            </p>
+          </Card>
+
+          <Card className="space-y-4 hover:shadow-md transition">
+            <div className="w-10 h-10 rounded-btn bg-peach text-burnt flex items-center justify-center">
+              <Briefcase className="w-5 h-5" />
+            </div>
+            <h3 className="font-headline font-bold text-lg text-carbon">pgvector Semantic Job Matching</h3>
+            <p className="text-xs text-textSecondary leading-relaxed">
+              Computes dense 384-dimensional cosine similarity against target postings to surface verified, partial, and missing competencies.
+            </p>
+          </Card>
+
+          <Card className="space-y-4 hover:shadow-md transition">
+            <div className="w-10 h-10 rounded-btn bg-peach text-burnt flex items-center justify-center">
+              <Target className="w-5 h-5" />
+            </div>
+            <h3 className="font-headline font-bold text-lg text-carbon">Explainable Skill Gap Analysis</h3>
+            <p className="text-xs text-textSecondary leading-relaxed">
+              Identifies missing critical qualifications and clearly separates explicit resume evidence from implicit industry requirements.
+            </p>
+          </Card>
+
+          <Card className="space-y-4 hover:shadow-md transition">
+            <div className="w-10 h-10 rounded-btn bg-peach text-burnt flex items-center justify-center">
+              <Map className="w-5 h-5" />
+            </div>
+            <h3 className="font-headline font-bold text-lg text-carbon">Milestone Learning Roadmaps</h3>
+            <p className="text-xs text-textSecondary leading-relaxed">
+              Converts discovered skill gaps into organized milestone learning tasks with estimated study hours, curated documentation, and coding projects.
+            </p>
+          </Card>
+
+          <Card className="space-y-4 hover:shadow-md transition">
+            <div className="w-10 h-10 rounded-btn bg-peach text-burnt flex items-center justify-center">
+              <MessagesSquare className="w-5 h-5" />
+            </div>
+            <h3 className="font-headline font-bold text-lg text-carbon">Voice RAG Mock Interviews</h3>
+            <p className="text-xs text-textSecondary leading-relaxed">
+              Practice role-specific technical and behavioral questions using native browser voice recognition, evaluated against rigorous STAR criteria.
+            </p>
+          </Card>
+
+          <Card className="space-y-4 hover:shadow-md transition">
+            <div className="w-10 h-10 rounded-btn bg-peach text-burnt flex items-center justify-center">
+              <BarChart2 className="w-5 h-5" />
+            </div>
+            <h3 className="font-headline font-bold text-lg text-carbon">Kanban Pipeline & Analytics</h3>
+            <p className="text-xs text-textSecondary leading-relaxed">
+              Track job opportunities across 7 stages with salary metrics, interview deadlines, notes, and historical score revision trends.
+            </p>
+          </Card>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section id="how-it-works" className="bg-white py-16 border-y border-borderStandard">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+            <Badge variant="carbon">System Workflow</Badge>
+            <h2 className="font-headline font-extrabold text-3xl text-carbon">How CareerFit AI Works</h2>
+            <p className="text-sm text-textSecondary">Four disciplined engineering steps to candidate readiness.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="space-y-2">
+              <span className="font-headline font-black text-3xl text-signature">01</span>
+              <h4 className="font-headline font-bold text-base text-carbon">Upload & Extract</h4>
+              <p className="text-xs text-textSecondary leading-relaxed">
+                Securely upload your PDF or DOCX resume. NLP algorithms extract sections, contact data, and skills into structured JSON.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <span className="font-headline font-black text-3xl text-signature">02</span>
+              <h4 className="font-headline font-bold text-base text-carbon">Deterministic ATS Scoring</h4>
+              <p className="text-xs text-textSecondary leading-relaxed">
+                Receive an objective 100-point score across 5 categories with Google X-Y-Z bullet rewrites and privacy disclosures.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <span className="font-headline font-black text-3xl text-signature">03</span>
+              <h4 className="font-headline font-bold text-base text-carbon">Match & Bridge Gaps</h4>
+              <p className="text-xs text-textSecondary leading-relaxed">
+                Compare your profile with target job descriptions using dense sentence embeddings to reveal exact missing competencies.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <span className="font-headline font-black text-3xl text-signature">04</span>
+              <h4 className="font-headline font-bold text-base text-carbon">Prepare & Apply</h4>
+              <p className="text-xs text-textSecondary leading-relaxed">
+                Complete mock interviews with AI evaluation, follow your customized skill roadmap, and track applications in your Kanban board.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Section 03: System Workflow */}
-      <section id="how-it-works" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-20">
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-          <div className="eyebrow inline-flex">
-            <span className="eyebrowNum">03</span> // SYSTEM WORKFLOW
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Engineered for Candidate Readiness
-          </h2>
-          <p className="text-sm sm:text-base text-secondary leading-relaxed">
-            Four disciplined engineering steps to comprehensive ATS readiness and interview mastery.
-          </p>
-        </div>
-
-        <div className="hairline-grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="hairline-card p-6 space-y-3">
-            <div className="font-mono text-xs font-bold text-brandOrange">01 // INGEST</div>
-            <h4 className="font-headline font-bold text-base text-foreground">Upload & Extract</h4>
-            <p className="text-xs text-secondary leading-relaxed">
-              Securely upload your PDF or DOCX resume. NLP algorithms extract sections, contact data, and skill inventories into structured JSON.
-            </p>
-          </div>
-
-          <div className="hairline-card p-6 space-y-3">
-            <div className="font-mono text-xs font-bold text-brandOrange">02 // AUDIT</div>
-            <h4 className="font-headline font-bold text-base text-foreground">Deterministic ATS Scoring</h4>
-            <p className="text-xs text-secondary leading-relaxed">
-              Receive an objective 100-point score across 5 categories with Google X-Y-Z bullet rewrites and explicit privacy disclosures.
-            </p>
-          </div>
-
-          <div className="hairline-card p-6 space-y-3">
-            <div className="font-mono text-xs font-bold text-brandOrange">03 // BRIDGE</div>
-            <h4 className="font-headline font-bold text-base text-foreground">Match & Bridge Gaps</h4>
-            <p className="text-xs text-secondary leading-relaxed">
-              Compare your profile with target job descriptions using dense sentence embeddings to reveal exact missing competencies.
-            </p>
-          </div>
-
-          <div className="hairline-card p-6 space-y-3">
-            <div className="font-mono text-xs font-bold text-brandOrange">04 // REHEARSE</div>
-            <h4 className="font-headline font-bold text-base text-foreground">Prepare & Apply</h4>
-            <p className="text-xs text-secondary leading-relaxed">
-              Complete mock interviews with AI evaluation, follow your customized skill roadmap, and track applications in your Kanban board.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Section 04: Methodology Comparison */}
-      <section id="comparison" className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-20">
-        <div className="text-center max-w-3xl mx-auto mb-12 space-y-3">
-          <div className="eyebrow inline-flex">
-            <span className="eyebrowNum">04</span> // METHODOLOGY COMPARISON
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+      {/* Comparison: Legacy ATS Checkers vs CareerFit AI */}
+      <section id="comparison" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
+        <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+          <Badge variant="carbon">Analytical Integrity</Badge>
+          <h2 className="font-headline font-extrabold text-3xl sm:text-4xl text-carbon">
             Why CareerFit AI Is Different
           </h2>
-          <p className="text-sm text-secondary">
-            Engineered for genuine engineer career growth — without black-box scores or paywalls.
+          <p className="text-sm text-textSecondary">
+            Engineered for genuine student and engineer career growth — without black-box percentages or paywalls.
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto bg-surfaceCard border border-surfaceBorder rounded-card overflow-hidden shadow-2xl">
+        <Card padded={false} className="overflow-hidden border-borderStrong shadow-md">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-surface border-b border-surfaceBorder uppercase font-mono text-[10px] font-bold tracking-wider">
+              <thead className="bg-carbon text-white uppercase text-[10px] font-bold tracking-wider">
                 <tr>
-                  <th className="py-4 px-6 text-foreground">Evaluation Dimension</th>
-                  <th className="py-4 px-6 text-muted">Legacy ATS Checkers</th>
-                  <th className="py-4 px-6 text-brandOrange">CareerFit AI Platform</th>
+                  <th className="py-4 px-6">Evaluation Dimension</th>
+                  <th className="py-4 px-6 text-gray-400">Legacy ATS Checkers</th>
+                  <th className="py-4 px-6 text-signature">CareerFit AI Platform</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-surfaceBorder">
+              <tbody className="divide-y divide-borderStandard bg-white">
                 <tr>
-                  <td className="py-4 px-6 font-bold text-foreground">Scoring Methodology</td>
-                  <td className="py-4 px-6 text-muted">Opaque percentage score with no mathematical breakdown</td>
-                  <td className="py-4 px-6 font-semibold text-brandOrange bg-brandOrange/5">
+                  <td className="py-4 px-6 font-bold text-carbon">Scoring Methodology</td>
+                  <td className="py-4 px-6 text-textMuted">Opaque percentage score with no mathematical breakdown</td>
+                  <td className="py-4 px-6 font-semibold text-carbon bg-peach/20">
                     Deterministic 100-Point Rubric across 5 transparent categories
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-bold text-foreground">Job Matching Algorithm</td>
-                  <td className="py-4 px-6 text-muted">Brittle keyword counting (punishes synonyms and phrasing)</td>
-                  <td className="py-4 px-6 font-semibold text-brandOrange bg-brandOrange/5">
+                  <td className="py-4 px-6 font-bold text-carbon">Job Matching Algorithm</td>
+                  <td className="py-4 px-6 text-textMuted">Brittle keyword counting (punishes synonyms and phrasing)</td>
+                  <td className="py-4 px-6 font-semibold text-carbon bg-peach/20">
                     384-dimensional dense sentence embeddings (pgvector cosine similarity)
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-bold text-foreground">Bullet Point Improvement</td>
-                  <td className="py-4 px-6 text-muted">Generic tips or hallucinated claims that harm credibility</td>
-                  <td className="py-4 px-6 font-semibold text-brandOrange bg-brandOrange/5">
+                  <td className="py-4 px-6 font-bold text-carbon">Bullet Point Improvement</td>
+                  <td className="py-4 px-6 text-textMuted">Generic tips or hallucinated claims that harm credibility</td>
+                  <td className="py-4 px-6 font-semibold text-carbon bg-peach/20">
                     Strict Google X-Y-Z accomplishment syntax with verification flags
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-bold text-foreground">Interview Preparation</td>
-                  <td className="py-4 px-6 text-muted">Static lists of generic questions with no feedback</td>
-                  <td className="py-4 px-6 font-semibold text-brandOrange bg-brandOrange/5">
+                  <td className="py-4 px-6 font-bold text-carbon">Interview Preparation</td>
+                  <td className="py-4 px-6 text-textMuted">Static lists of generic questions with no feedback</td>
+                  <td className="py-4 px-6 font-semibold text-carbon bg-peach/20">
                     RAG-driven mock technical interviews scored on STAR criteria
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-bold text-foreground">Access & Pricing</td>
-                  <td className="py-4 px-6 text-muted">Gated paywalls ($29 - $49/mo), blurred insights, locked features</td>
-                  <td className="py-4 px-6 font-semibold text-emerald-400 bg-brandOrange/5">
+                  <td className="py-4 px-6 font-bold text-carbon">Access & Pricing</td>
+                  <td className="py-4 px-6 text-textMuted">Gated paywalls ($29 - $49/mo), blurred insights, locked features</td>
+                  <td className="py-4 px-6 font-semibold text-emerald-800 bg-peach/20">
                     100% Free & Open Access for all candidates and students
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-        </div>
+        </Card>
       </section>
 
-      {/* Section 05: Verified Outcomes (Case Studies) */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center max-w-3xl mx-auto mb-14 space-y-3">
-          <div className="eyebrow inline-flex">
-            <span className="eyebrowNum">05</span> // VERIFIED OUTCOMES
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+      {/* Candidate Impact Case Studies */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
+          <Badge variant="orange">Verified Outcomes</Badge>
+          <h2 className="font-headline font-extrabold text-3xl sm:text-4xl text-carbon">
             Real Candidate Transformations
           </h2>
-          <p className="text-sm text-secondary">
-            Measurable score improvements and career transitions verified on the platform.
+          <p className="text-sm text-textSecondary">
+            Documented score improvements and career transitions powered by CareerFit AI.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-surfaceCard border border-surfaceBorder rounded-card p-6 space-y-4 flex flex-col justify-between tactile-card">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Card className="space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-foreground">Alex C. • CS Graduate</span>
-                <Badge variant="emerald" size="xs">Hired @ FinTech</Badge>
+                <span className="text-xs font-bold text-carbon">Alex C. • CS Graduate</span>
+                <Badge variant="success">Hired @ FinTech</Badge>
               </div>
               <div className="flex items-center gap-3 py-1">
                 <div className="text-center">
-                  <span className="text-[10px] text-muted uppercase font-mono">Initial ATS</span>
-                  <div className="font-headline font-black text-xl text-red-400">58 / 100</div>
+                  <span className="text-[10px] text-textMuted uppercase font-bold">Initial ATS</span>
+                  <div className="font-headline font-extrabold text-xl text-red-600">58 / 100</div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-muted" />
+                <ArrowRight className="w-4 h-4 text-textMuted" />
                 <div className="text-center">
-                  <span className="text-[10px] text-muted uppercase font-mono">Final ATS</span>
-                  <div className="font-headline font-black text-xl text-emerald-400">88 / 100</div>
+                  <span className="text-[10px] text-textMuted uppercase font-bold">Final ATS</span>
+                  <div className="font-headline font-extrabold text-xl text-emerald-600">88 / 100</div>
                 </div>
               </div>
-              <p className="text-xs text-secondary leading-relaxed italic">
+              <p className="text-xs text-textSecondary leading-relaxed italic">
                 "The Google X-Y-Z rewrites turned my vague college projects into quantifiable engineering feats. I landed 4 first-round technical screens within two weeks."
               </p>
             </div>
-            <span className="text-[11px] text-muted border-t border-surfaceBorder pt-3 block font-mono">
+            <span className="text-[11px] text-textMuted border-t border-borderStandard pt-3 block">
               Role: Junior Full Stack Engineer
             </span>
-          </div>
+          </Card>
 
-          <div className="bg-surfaceCard border border-brandOrangeBorder rounded-card p-6 space-y-4 flex flex-col justify-between tactile-card">
+          <Card className="space-y-4 flex flex-col justify-between border-signature/40 shadow-sm">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-foreground">Maya P. • Career Switcher</span>
-                <Badge variant="emerald" size="xs">Hired @ Cloud SaaS</Badge>
+                <span className="text-xs font-bold text-carbon">Maya P. • Career Switcher</span>
+                <Badge variant="success">Hired @ Cloud SaaS</Badge>
               </div>
               <div className="flex items-center gap-3 py-1">
                 <div className="text-center">
-                  <span className="text-[10px] text-muted uppercase font-mono">Job Match</span>
-                  <div className="font-headline font-black text-xl text-amber-400">61%</div>
+                  <span className="text-[10px] text-textMuted uppercase font-bold">Job Match</span>
+                  <div className="font-headline font-extrabold text-xl text-amber-600">61%</div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-muted" />
+                <ArrowRight className="w-4 h-4 text-textMuted" />
                 <div className="text-center">
-                  <span className="text-[10px] text-muted uppercase font-mono">After Roadmap</span>
-                  <div className="font-headline font-black text-xl text-emerald-400">92%</div>
+                  <span className="text-[10px] text-textMuted uppercase font-bold">After Roadmap</span>
+                  <div className="font-headline font-extrabold text-xl text-emerald-600">92%</div>
                 </div>
               </div>
-              <p className="text-xs text-secondary leading-relaxed italic">
+              <p className="text-xs text-textSecondary leading-relaxed italic">
                 "The personalized Docker and PostgreSQL roadmap showed me exactly what was holding my profile back. The roadmap tasks gave me direct portfolio project evidence."
               </p>
             </div>
-            <span className="text-[11px] text-muted border-t border-surfaceBorder pt-3 block font-mono">
+            <span className="text-[11px] text-textMuted border-t border-borderStandard pt-3 block">
               Role: Backend Systems Developer
             </span>
-          </div>
+          </Card>
 
-          <div className="bg-surfaceCard border border-surfaceBorder rounded-card p-6 space-y-4 flex flex-col justify-between tactile-card">
+          <Card className="space-y-4 flex flex-col justify-between">
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-foreground">Liam W. • Self-Taught Dev</span>
-                <Badge variant="emerald" size="xs">Offer Accepted</Badge>
+                <span className="text-xs font-bold text-carbon">Liam W. • Self-Taught Dev</span>
+                <Badge variant="success">Offer Accepted</Badge>
               </div>
               <div className="flex items-center gap-3 py-1">
                 <div className="text-center">
-                  <span className="text-[10px] text-muted uppercase font-mono">STAR Score</span>
-                  <div className="font-headline font-black text-xl text-amber-400">6.2 / 10</div>
+                  <span className="text-[10px] text-textMuted uppercase font-bold">STAR Score</span>
+                  <div className="font-headline font-extrabold text-xl text-amber-600">6.2 / 10</div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-muted" />
+                <ArrowRight className="w-4 h-4 text-textMuted" />
                 <div className="text-center">
-                  <span className="text-[10px] text-muted uppercase font-mono">Practiced</span>
-                  <div className="font-headline font-black text-xl text-emerald-400">9.4 / 10</div>
+                  <span className="text-[10px] text-textMuted uppercase font-bold">Practiced</span>
+                  <div className="font-headline font-extrabold text-xl text-emerald-600">9.4 / 10</div>
                 </div>
               </div>
-              <p className="text-xs text-secondary leading-relaxed italic">
+              <p className="text-xs text-textSecondary leading-relaxed italic">
                 "The voice-enabled STAR interview coach pointed out that I kept rambling on the 'Task' and under-explaining my 'Result'. Fixed my pacing immediately."
               </p>
             </div>
-            <span className="text-[11px] text-muted border-t border-surfaceBorder pt-3 block font-mono">
+            <span className="text-[11px] text-textMuted border-t border-borderStandard pt-3 block">
               Role: Frontend Engineer
             </span>
-          </div>
+          </Card>
         </div>
       </section>
 
-      {/* Section 06: Knowledge Base (FAQ) */}
-      <section id="faq" className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 scroll-mt-20">
+      {/* FAQ Accordion */}
+      <section id="faq" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-20">
         <div className="text-center mb-12 space-y-3">
-          <div className="eyebrow inline-flex">
-            <span className="eyebrowNum">06</span> // KNOWLEDGE BASE
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Transparent Explanations
-          </h2>
-          <p className="text-sm text-secondary">
-            Everything you need to know about our scoring methodology and privacy protocols.
-          </p>
+          <Badge variant="carbon">Frequently Asked Questions</Badge>
+          <h2 className="font-headline font-extrabold text-3xl text-carbon">Clear, Transparent Answers</h2>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {faqs.map((faq, i) => (
-            <div key={i} className="bg-surfaceCard border border-surfaceBorder rounded-card overflow-hidden tactile-card">
+            <Card key={i} padded={false} className="overflow-hidden">
               <button
                 onClick={() => toggleFaq(i)}
-                className="w-full px-6 py-4.5 flex items-center justify-between text-left hover:bg-surface/60 transition-colors"
+                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-neutralLight/40 transition"
                 aria-expanded={openFaq === i}
               >
-                <span className="font-headline font-bold text-sm text-foreground">{faq.q}</span>
-                <ChevronDown
-                  className={`w-4 h-4 text-secondary transition-transform duration-200 ${
-                    openFaq === i ? 'rotate-180 text-brandOrange' : ''
-                  }`}
-                />
+                <span className="font-headline font-bold text-sm text-carbon">{faq.q}</span>
+                <ChevronDown className={`w-4 h-4 text-textMuted transition-transform duration-200 ${openFaq === i ? 'rotate-180' : ''}`} />
               </button>
               {openFaq === i && (
-                <div className="px-6 pb-5 pt-1 text-xs text-secondary leading-relaxed border-t border-surfaceBorder bg-surface/30">
+                <div className="px-6 pb-5 pt-1 text-xs text-textSecondary leading-relaxed border-t border-borderStandard bg-ivory/30">
                   {faq.a}
                 </div>
               )}
-            </div>
+            </Card>
           ))}
         </div>
       </section>
 
       {/* Bottom Final CTA */}
-      <section className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <div className="bg-surfaceCard border border-surfaceBorder rounded-card p-8 sm:p-14 text-center space-y-6 relative overflow-hidden shadow-2xl tactile-card">
-          <div className="beam opacity-75" />
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        <div className="bg-carbon text-white rounded-standard p-8 sm:p-12 text-center space-y-6 relative overflow-hidden">
           <div className="max-w-2xl mx-auto space-y-3 relative z-10">
-            <h2 className="font-headline font-black text-3xl sm:text-4xl text-white">
-              Ready to verify your readiness?
+            <h2 className="font-headline font-extrabold text-3xl sm:text-4xl text-white">
+              Ready To Optimize Your Career Trajectory?
             </h2>
-            <p className="text-xs sm:text-sm text-secondary leading-relaxed max-w-lg mx-auto">
-              Test your resume against 100 explainable points, find missing skills, and run practice screens. Free for all engineers and students.
+            <p className="text-xs sm:text-sm text-textDisabled leading-relaxed">
+              Join candidates leveraging deterministic ATS evaluation, dense semantic job matching, and RAG mock interviews. No credit card required.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 relative z-10">
             <Link to="/signup">
-              <Button variant="primary" size="lg" className="haptic-btn">
-                <span>Start Free Assessment</span>
+              <Button variant="primary" size="lg">
+                <span>Create Free Account</span>
                 <ArrowRight className="w-4 h-4 ml-1.5" />
               </Button>
             </Link>
             <Link to="/login">
-              <Button variant="secondary" size="lg" className="haptic-btn">
-                Sign In
+              <Button variant="secondary" size="lg">
+                Candidate Login
               </Button>
             </Link>
           </div>

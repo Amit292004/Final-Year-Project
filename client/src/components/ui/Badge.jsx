@@ -11,27 +11,25 @@ export function Badge({
   className = ''
 }) {
   const variants = {
-    orange: 'bg-brandOrange/15 text-brandOrange border border-brandOrangeBorder font-semibold',
-    success: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold',
-    emerald: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold',
-    warning: 'bg-amber-500/15 text-amber-300 border border-amber-500/30 font-semibold',
-    error: 'bg-red-500/15 text-red-400 border border-red-500/30 font-semibold',
-    neutral: 'bg-surfaceCard text-secondary border border-surfaceBorder font-medium',
-    carbon: 'bg-surface text-foreground font-medium border border-surfaceBorder',
-    blue: 'bg-sky-500/15 text-sky-300 border border-sky-500/30 font-semibold',
-    purple: 'bg-purple-500/15 text-purple-300 border border-purple-500/30 font-semibold'
+    orange: 'bg-peach text-burnt border border-orange-200/90 font-semibold',
+    success: 'bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold',
+    warning: 'bg-amber-50 text-amber-800 border border-amber-200 font-semibold',
+    error: 'bg-red-50 text-red-700 border border-red-200 font-semibold',
+    neutral: 'bg-neutralLight text-textSecondary border border-borderStandard font-medium',
+    carbon: 'bg-carbon text-white font-medium border border-graphite',
+    blue: 'bg-sky-50 text-sky-800 border border-sky-200 font-semibold',
+    purple: 'bg-purple-50 text-purple-800 border border-purple-200 font-semibold'
   };
 
   const dotColors = {
-    orange: 'bg-brandOrange',
-    success: 'bg-emerald-400',
-    emerald: 'bg-emerald-400',
-    warning: 'bg-amber-400',
-    error: 'bg-red-400',
-    neutral: 'bg-muted',
-    carbon: 'bg-brandOrange',
-    blue: 'bg-sky-400',
-    purple: 'bg-purple-400'
+    orange: 'bg-burnt',
+    success: 'bg-emerald-500',
+    warning: 'bg-amber-500',
+    error: 'bg-red-500',
+    neutral: 'bg-textMuted',
+    carbon: 'bg-signature',
+    blue: 'bg-sky-500',
+    purple: 'bg-purple-500'
   };
 
   const sizes = {

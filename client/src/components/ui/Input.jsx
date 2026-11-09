@@ -21,11 +21,11 @@ export function Input({
   const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined);
 
   const inputClass = cn(
-    'w-full rounded-card border bg-surface px-3.5 py-2.5 text-sm text-foreground placeholder:text-textMuted transition-all duration-150',
-    'focus:outline-none focus:ring-2 focus:ring-brandOrange/20 focus:border-brandOrange',
+    'w-full rounded-card border bg-white px-3.5 py-2.5 text-sm text-textPrimary placeholder:text-textDisabled transition-all duration-150',
+    'focus:outline-none focus:ring-2 focus:ring-signature/20 focus:border-signature',
     error
-      ? 'border-semanticError focus:ring-semanticError/20 focus:border-semanticError bg-red-950/20'
-      : 'border-surfaceBorder hover:border-surfaceBorder/80 shadow-sm',
+      ? 'border-semanticError focus:ring-semanticError/20 focus:border-semanticError bg-red-50/10'
+      : 'border-borderStandard hover:border-borderStrong shadow-subtle',
     Icon && 'pl-10',
     isPassword && 'pr-10',
     className
@@ -35,8 +35,8 @@ export function Input({
     <div className="w-full space-y-1.5">
       {label && (
         <div className="flex items-center justify-between">
-          <label htmlFor={inputId} className="block text-xs font-mono font-semibold text-secondary uppercase tracking-wider">
-            {label} {required && <span className="text-brandOrange font-bold">*</span>}
+          <label htmlFor={inputId} className="block text-xs font-bold text-carbon uppercase tracking-wider">
+            {label} {required && <span className="text-signature font-bold">*</span>}
           </label>
         </div>
       )}

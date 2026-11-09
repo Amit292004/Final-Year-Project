@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, AlertCircle } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
-import { AnimateIn } from '../../components/ui/AnimateIn';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function LoginPage() {
@@ -34,10 +33,10 @@ export function LoginPage() {
   };
 
   return (
-    <AnimateIn delay={0} className="space-y-6">
+    <div className="space-y-6">
       <div>
-        <h2 className="font-headline font-black text-2xl text-carbon text-center">
-          Candidate Sign In
+        <h2 className="font-headline font-extrabold text-2xl text-carbon text-center">
+          Sign In to Your Workspace
         </h2>
         <p className="mt-1 text-xs text-textSecondary text-center">
           Access your resumes, matches, interview sessions, and roadmaps.
@@ -102,6 +101,6 @@ export function LoginPage() {
           Create Account
         </Link>
       </div>
-    </AnimateIn>
+    </div>
   );
 }

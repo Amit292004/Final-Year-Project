@@ -227,7 +227,7 @@ export function ResumeLibraryPage() {
           )}
 
           {/* Drag and Drop Zone */}
-          <div className="border-2 border-dashed border-surfaceBorder rounded-standard p-6 text-center hover:border-brandOrange bg-surface/50 transition cursor-pointer relative">
+          <div className="border-2 border-dashed border-borderStandard rounded-standard p-6 text-center hover:border-signature bg-ivory/50 transition cursor-pointer relative">
             <input
               type="file"
               accept=".pdf,.docx,.txt"

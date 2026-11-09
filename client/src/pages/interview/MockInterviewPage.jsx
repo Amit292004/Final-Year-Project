@@ -12,9 +12,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   RotateCcw,
-  Volume2,
-  Check,
-  X
+  Volume2
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
@@ -254,7 +252,7 @@ export function MockInterviewPage() {
               </div>
             </div>
 
-            <div className="p-4 rounded-standard bg-surface border border-surfaceBorder text-xs text-secondary space-y-1">
+            <div className="p-4 rounded-standard bg-ivory border border-borderStandard text-xs text-textSecondary space-y-1">
               <span className="font-bold text-carbon block">Curriculum Breakdown:</span>
               <p>• 1 Background Project Walkthrough</p>
               <p>• 2 Core Technical Problem-Solving Questions</p>
@@ -410,20 +408,20 @@ export function MockInterviewPage() {
 
               {/* STAR Alignment Check for behavioral */}
               {currentFeedback.star_alignment && (
-                <div className="p-3.5 bg-surface rounded border border-surfaceBorder space-y-2 text-xs">
+                <div className="p-3.5 bg-ivory rounded border border-borderStandard space-y-2 text-xs">
                   <span className="font-bold text-carbon block">STAR Framework Alignment:</span>
                   <div className="grid grid-cols-4 gap-2 text-center text-[11px] font-semibold">
-                    <span className={`inline-flex items-center justify-center gap-1 ${currentFeedback.star_alignment.situation ? 'text-semanticSuccess' : 'text-textDisabled'}`}>
-                      Situation {currentFeedback.star_alignment.situation ? <Check className="w-3 h-3 text-emerald-500" /> : <X className="w-3 h-3 text-red-500" />}
+                    <span className={currentFeedback.star_alignment.situation ? 'text-semanticSuccess' : 'text-textDisabled'}>
+                      Situation {currentFeedback.star_alignment.situation ? '✓' : '✗'}
                     </span>
-                    <span className={`inline-flex items-center justify-center gap-1 ${currentFeedback.star_alignment.task ? 'text-semanticSuccess' : 'text-textDisabled'}`}>
-                      Task {currentFeedback.star_alignment.task ? <Check className="w-3 h-3 text-emerald-500" /> : <X className="w-3 h-3 text-red-500" />}
+                    <span className={currentFeedback.star_alignment.task ? 'text-semanticSuccess' : 'text-textDisabled'}>
+                      Task {currentFeedback.star_alignment.task ? '✓' : '✗'}
                     </span>
-                    <span className={`inline-flex items-center justify-center gap-1 ${currentFeedback.star_alignment.action ? 'text-semanticSuccess' : 'text-textDisabled'}`}>
-                      Action {currentFeedback.star_alignment.action ? <Check className="w-3 h-3 text-emerald-500" /> : <X className="w-3 h-3 text-red-500" />}
+                    <span className={currentFeedback.star_alignment.action ? 'text-semanticSuccess' : 'text-textDisabled'}>
+                      Action {currentFeedback.star_alignment.action ? '✓' : '✗'}
                     </span>
-                    <span className={`inline-flex items-center justify-center gap-1 ${currentFeedback.star_alignment.result ? 'text-semanticSuccess' : 'text-textDisabled'}`}>
-                      Result {currentFeedback.star_alignment.result ? <Check className="w-3 h-3 text-emerald-500" /> : <X className="w-3 h-3 text-red-500" />}
+                    <span className={currentFeedback.star_alignment.result ? 'text-semanticSuccess' : 'text-textDisabled'}>
+                      Result {currentFeedback.star_alignment.result ? '✓' : '✗'}
                     </span>
                   </div>
                 </div>

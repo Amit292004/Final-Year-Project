@@ -63,21 +63,21 @@ export function Sidebar({ mobileOpen = false, setMobileOpen = () => {} }) {
   ];
 
   const content = (
-    <div className="flex flex-col h-full bg-obsidian text-foreground w-64 select-none border-r border-surfaceBorder">
+    <div className="flex flex-col h-full bg-carbon text-white w-64 select-none">
       {/* Brand Header */}
-      <div className="h-16 flex items-center justify-between px-6 border-b border-surfaceBorder">
+      <div className="h-16 flex items-center justify-between px-6 border-b border-graphite">
         <NavLink to="/dashboard" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-btn bg-brandOrange flex items-center justify-center text-white font-headline font-black text-lg shadow-sm">
+          <div className="w-8 h-8 rounded-btn bg-signature flex items-center justify-center text-white font-headline font-black text-lg shadow-sm">
             C
           </div>
-          <span className="font-headline font-black text-lg tracking-tight text-foreground">
-            CareerFit<span className="text-brandOrange">.AI</span>
+          <span className="font-headline font-extrabold text-lg tracking-tight text-white">
+            CareerFit<span className="text-signature">.AI</span>
           </span>
         </NavLink>
         {mobileOpen && (
           <button
             onClick={() => setMobileOpen(false)}
-            className="md:hidden text-secondary hover:text-foreground"
+            className="md:hidden text-textDisabled hover:text-white"
             aria-label="Close navigation"
           >
             <X className="w-5 h-5" />
@@ -86,12 +86,11 @@ export function Sidebar({ mobileOpen = false, setMobileOpen = () => {} }) {
       </div>
 
       {/* Nav Groups */}
-      <div className="flex-1 overflow-y-auto py-4 px-3 space-y-5">
-        {navGroups.map((group, groupIdx) => (
-          <div key={group.label} className={`space-y-1 ${groupIdx > 0 ? 'pt-3 border-t border-surfaceBorder' : ''}`}>
-            <div className="px-3 text-[10px] font-mono font-semibold text-textMuted uppercase tracking-[0.18em] mb-1.5 flex items-center gap-2">
-              <span className="w-1 h-1 rounded-full bg-brandOrange" />
-              <span>{group.label}</span>
+      <div className="flex-1 overflow-y-auto py-5 px-3 space-y-6">
+        {navGroups.map((group) => (
+          <div key={group.label} className="space-y-1">
+            <div className="px-3 text-[10px] font-bold text-textDisabled uppercase tracking-widest mb-2">
+              {group.label}
             </div>
             {group.items.map((item) => {
               const Icon = item.icon;
@@ -101,19 +100,19 @@ export function Sidebar({ mobileOpen = false, setMobileOpen = () => {} }) {
                   to={item.path}
                   onClick={() => setMobileOpen(false)}
                   className={({ isActive }) =>
-                    `group flex items-center gap-3 px-3 py-2 text-xs rounded-btn transition-all duration-150 ease-custom-out relative ${
+                    `flex items-center gap-3 px-3.5 py-2.5 text-xs font-medium rounded-btn transition-colors relative ${
                       isActive
-                        ? 'bg-surfaceCard text-foreground font-semibold shadow-sm border border-surfaceBorder'
-                        : 'text-secondary hover:text-foreground hover:bg-surface'
+                        ? 'bg-graphite text-white font-semibold'
+                        : 'text-gray-300 hover:text-white hover:bg-graphite/50'
                     }`
                   }
                 >
                   {({ isActive }) => (
                     <>
                       {isActive && (
-                        <div className="absolute left-0 top-1 bottom-1 w-1 rounded-r-sm bg-brandOrange shadow-glow-orange" />
+                        <div className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r bg-signature" />
                       )}
-                      <Icon className={`w-4 h-4 shrink-0 transition-transform duration-150 ease-custom-out group-hover:scale-110 ${isActive ? 'text-brandOrange' : 'text-textMuted group-hover:text-foreground'}`} />
+                      <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-signature' : 'text-textDisabled'}`} />
                       <span className="truncate">{item.label}</span>
                     </>
                   )}
@@ -125,25 +124,24 @@ export function Sidebar({ mobileOpen = false, setMobileOpen = () => {} }) {
       </div>
 
       {/* User profile footer */}
-      <div className="p-3 border-t border-surfaceBorder bg-surface">
-        <div className="flex items-center justify-between p-2.5 rounded-btn bg-surfaceCard border border-surfaceBorder hover:border-surfaceBorder/80 transition-colors">
+      <div className="p-3 border-t border-graphite bg-carbon">
+        <div className="flex items-center justify-between p-2 rounded-btn bg-graphite/40">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-full bg-brandOrangeLight border border-brandOrangeBorder text-brandOrange font-bold text-xs flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-full bg-signature/20 border border-signature/40 text-signature font-bold text-xs flex items-center justify-center shrink-0">
               {user?.user_metadata?.full_name?.charAt(0) || user?.email?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div className="truncate">
-              <p className="text-xs font-semibold text-foreground truncate">
+              <p className="text-xs font-semibold text-white truncate">
                 {user?.user_metadata?.full_name || 'Candidate User'}
               </p>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span className="text-[10px] text-textMuted font-mono uppercase tracking-wider">Academic Tier</span>
-              </div>
+              <p className="text-[11px] text-textDisabled truncate">
+                {user?.email || 'candidate@careerfit.ai'}
+              </p>
             </div>
           </div>
           <button
             onClick={handleSignOut}
-            className="p-1.5 rounded hover:bg-surface text-secondary hover:text-brandOrange transition-colors ml-1 shrink-0"
+            className="p-1.5 rounded hover:bg-graphite text-textDisabled hover:text-burnt transition"
             title="Sign out"
             aria-label="Sign out"
           >

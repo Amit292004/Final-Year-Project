@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import toast from 'react-hot-toast';
 import {
   Map,
   CheckCircle2,
@@ -60,9 +59,8 @@ export function LearningRoadmapPage() {
         })
       });
       await loadRoadmaps();
-      toast.success('Learning roadmap generated successfully!');
     } catch (e) {
-      toast.error('Failed to generate roadmap: ' + (e.message || e));
+      alert('Failed to generate roadmap: ' + (e.message || e));
     } finally {
       setGenerating(false);
     }
@@ -85,9 +83,8 @@ export function LearningRoadmapPage() {
         const pct = updatedTasks.length > 0 ? Math.round((comp / updatedTasks.length) * 100) : 0;
         setActiveRoadmap({ ...activeRoadmap, tasks: updatedTasks, progress_percentage: pct });
       }
-      toast.success(nextStatus === 'completed' ? 'Milestone completed!' : 'Milestone marked pending');
     } catch (e) {
-      toast.error('Failed to update task.');
+      alert('Failed to update task.');
     }
   };
 
@@ -164,12 +161,10 @@ export function LearningRoadmapPage() {
                 return (
                   <Card
                     key={task.id}
-                    padded={false}
-                    className={`transition-all relative overflow-hidden p-5 ${
-                      isDone ? 'bg-white opacity-80' : 'bg-white shadow-sm'
+                    className={`transition-all border-l-4 ${
+                      isDone ? 'border-l-semanticSuccess bg-white opacity-80' : 'border-l-signature bg-white shadow-sm'
                     }`}
                   >
-                    <div className={`absolute left-0 top-0 bottom-0 w-1.5 ${isDone ? 'bg-semanticSuccess' : 'bg-signature'}`} />
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex items-start gap-3">
                         <button

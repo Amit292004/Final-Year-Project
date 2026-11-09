@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
-import { AnimateIn } from '../../components/ui/AnimateIn';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function SignupPage() {
@@ -72,13 +71,13 @@ export function SignupPage() {
   }
 
   return (
-    <AnimateIn delay={0} className="space-y-6">
+    <div className="space-y-6">
       <div>
-        <h2 className="font-headline font-black text-2xl text-carbon text-center">
-          Create Free Account
+        <h2 className="font-headline font-extrabold text-2xl text-carbon text-center">
+          Create Your Free Account
         </h2>
         <p className="mt-1 text-xs text-textSecondary text-center">
-          Access deterministic ATS scoring, job matching, and interview practice.
+          Join candidates leveraging AI career intelligence.
         </p>
       </div>
 
@@ -162,6 +161,6 @@ export function SignupPage() {
           Sign In
         </Link>
       </div>
-    </AnimateIn>
+    </div>
   );
 }

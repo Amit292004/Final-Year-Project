@@ -10,8 +10,7 @@ import {
   ArrowRight,
   Target,
   MessagesSquare,
-  BookmarkPlus,
-  XCircle
+  BookmarkPlus
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
@@ -307,7 +306,7 @@ export function JobMatchingPage() {
                     onClick={handleSaveToTracker}
                     disabled={savedToTracker}
                   >
-                    {savedToTracker ? 'Saved to Tracker' : 'Save to Job Tracker'}
+                    {savedToTracker ? 'Saved to Tracker ✓' : 'Save to Job Tracker'}
                   </Button>
                   <Link to="/skills">
                     <Button variant="outline" size="sm" icon={Target}>
@@ -339,7 +338,7 @@ export function JobMatchingPage() {
                     {/* Matched Keywords */}
                     <div className="space-y-2">
                       <span className="font-bold text-emerald-800 uppercase text-[10px] block">
-                        Matched Terms ({matchResult.matched_keywords?.length || 0})
+                        ✅ Matched Terms ({matchResult.matched_keywords?.length || 0})
                       </span>
                       <div className="flex flex-wrap gap-1 max-h-40 overflow-y-auto">
                         {(matchResult.matched_keywords || []).map((kw, i) => (
@@ -352,9 +351,8 @@ export function JobMatchingPage() {
 
                     {/* Missing Keywords */}
                     <div className="space-y-2">
-                      <span className="font-bold text-red-800 uppercase text-[10px] flex items-center gap-1.5">
-                        <XCircle className="w-3.5 h-3.5 text-red-600" />
-                        <span>Missing Terms ({matchResult.missing_keywords?.length || 0})</span>
+                      <span className="font-bold text-red-800 uppercase text-[10px] block">
+                        ❌ Missing Terms ({matchResult.missing_keywords?.length || 0})
                       </span>
                       <div className="flex flex-wrap gap-1 max-h-40 overflow-y-auto">
                         {(matchResult.missing_keywords || []).map((kw, i) => (
@@ -367,9 +365,8 @@ export function JobMatchingPage() {
 
                     {/* Skills Gap */}
                     <div className="space-y-2">
-                      <span className="font-bold text-amber-800 uppercase text-[10px] flex items-center gap-1.5">
-                        <Target className="w-3.5 h-3.5 text-amber-600" />
-                        <span>Skills Gap ({matchResult.skills_gap?.length || 0})</span>
+                      <span className="font-bold text-amber-800 uppercase text-[10px] block">
+                        📊 Skills Gap ({matchResult.skills_gap?.length || 0})
                       </span>
                       <div className="flex flex-wrap gap-1 max-h-40 overflow-y-auto">
                         {(matchResult.skills_gap || []).map((sg, i) => (
